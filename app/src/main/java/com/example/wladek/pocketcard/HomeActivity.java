@@ -1,7 +1,6 @@
 package com.example.wladek.pocketcard;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,18 +14,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.example.wladek.pocketcard.helper.DatabaseHelper;
 
 
 public class HomeActivity extends AppCompatActivity {
+    DatabaseHelper myDb;
 
-    Button btnReg;
-    Button btnBuy;
-    Button btnRegBack;
     Button btnBuyBack;
+    Button btnCreateStudent;
+    Button btnCancelCreateStudent;
+    Button btnSkipLogin;
+
+    ProgressBar create_progress;
+
     LinearLayout buyLayOut;
-    LinearLayout regLayOut;
     LinearLayout homeLayOut;
+    LinearLayout logInLayOut;
+    LinearLayout createStudentLayOut;
 
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -39,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myDb = new DatabaseHelper(this);
         setContentView(R.layout.activity_home);
 
         // Initializing Toolbar and setting it as the actionbar
@@ -57,20 +65,24 @@ public class HomeActivity extends AppCompatActivity {
          * Logic buttons switch
          */
 
-        btnReg = (Button) findViewById(R.id.btnReg);
-        btnBuy = (Button) findViewById(R.id.btnBuy);
-        btnRegBack = (Button) findViewById(R.id.btnRegBack);
         btnBuyBack = (Button) findViewById(R.id.btnBuyBack);
+        btnCreateStudent = (Button)findViewById(R.id.btnCreateStudent);
+        btnCancelCreateStudent = (Button)findViewById(R.id.btnCancelCreateStudent);
+        btnSkipLogin = (Button)findViewById(R.id.btnSkipLogin);
+
+        create_progress = (ProgressBar)findViewById(R.id.create_progress);
 
         buyLayOut = (LinearLayout) findViewById(R.id.buyLayOut);
-        regLayOut = (LinearLayout) findViewById(R.id.regLayout);
         homeLayOut = (LinearLayout) findViewById(R.id.homeLayout);
+        logInLayOut = (LinearLayout) findViewById(R.id.logInLayOut);
+        createStudentLayOut = (LinearLayout) findViewById(R.id.createStudentLayOut);
 
         lstShopItems = (ListView) findViewById(R.id.lstShopItems);
 
-        //Hide both layouts
+        //Hide layouts
         buyLayOut.setVisibility(View.INVISIBLE);
-        regLayOut.setVisibility(View.INVISIBLE);
+        logInLayOut.setVisibility(View.INVISIBLE);
+        createStudentLayOut.setVisibility(View.INVISIBLE);
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -86,27 +98,32 @@ public class HomeActivity extends AppCompatActivity {
                     menuItem.setChecked(true);
                 }
 
+                hideViews();
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_sync:
-                        Toast.makeText(getApplicationContext(), "Syncronise", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_register:
+                        logInLayOut.setVisibility(View.VISIBLE);
+
                         break;
-                    case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-                        homeLayOut.setVisibility(View.INVISIBLE);
+                    case R.id.nav_buy:
+
+                        buyLayOut.setVisibility(View.VISIBLE);
+
                         break;
 
-                    case R.id.nav_import:
-                        Toast.makeText(getApplicationContext(), "Import", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_settings:
+                        Toast.makeText(getApplicationContext() , "Settings" , Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.nav_items:
-                        Toast.makeText(getApplicationContext(), "Items", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_view_items:
+                        Toast.makeText(getApplicationContext() , "View item list " , Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.nav_share:
-                        Toast.makeText(getApplicationContext(), "Share", Toast.LENGTH_SHORT).show();
+                    case R.id.nav_update:
+                        Toast.makeText(getApplicationContext() , " Update " , Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.nav_view:
-                        Toast.makeText(getApplicationContext(), "View", Toast.LENGTH_SHORT).show();
+                    case R.id.demo_student:
+
+                        createStudentLayOut.setVisibility(View.VISIBLE);
+
                         break;
                     default:
                         break;
@@ -118,38 +135,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        btnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, " Register", Toast.LENGTH_LONG).show();
-                homeLayOut.setVisibility(View.INVISIBLE);
-                regLayOut.setVisibility(View.VISIBLE);
-            }
-        });
-
-
-        btnBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, " Buy ", Toast.LENGTH_LONG).show();
-                homeLayOut.setVisibility(View.INVISIBLE);
-                buyLayOut.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnRegBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                regLayOut.setVisibility(View.INVISIBLE);
-                homeLayOut.setVisibility(View.VISIBLE);
-            }
-        });
-
         btnBuyBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideViews();
                 buyLayOut.setVisibility(View.INVISIBLE);
-                homeLayOut.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnSkipLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideViews();
+                createStudentLayOut.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnCreateStudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                create_progress.animate();
+                create_progress.setVisibility(View.VISIBLE);
             }
         });
 
@@ -192,6 +198,14 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void hideViews(){
+        homeLayOut.setVisibility(View.INVISIBLE);
+        logInLayOut.setVisibility(View.INVISIBLE);
+        buyLayOut.setVisibility(View.INVISIBLE);
+        createStudentLayOut.setVisibility(View.INVISIBLE);
+        create_progress.setVisibility(View.INVISIBLE);
     }
 
 //    @SuppressWarnings("StatementWithEmptyBody")

@@ -13,44 +13,121 @@
     tools:showIn="@layout/app_bar_home">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_left_margin"
+        android:paddingRight="@dimen/activity_horizontal_right_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:id="@+id/homeLayout">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="199dp"
-            android:layout_height="77dp">
+        <TextView
+            android:id="@+id/student_form_title"
+            android:layout_width="237dp"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.AppBarOverlay"
+            android:hint=""
+            android:maxLines="1"
+            android:text="WELCOME TO POCKET CARD APP"
+            android:singleLine="true" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register Card"
-                android:id="@+id/btnReg" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POCKET CARD"
+            android:padding="15dp"
+            android:textColor="#fff"
+            android:background="@color/PrimaryColor"
+            android:textSize="30sp"
+            android:id="@+id/pktCardNote"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <ScrollView
+            android:id="@+id/welcome_page"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/home_lenear_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Buy Item(s)"
-                android:id="@+id/btnBuy" />
-        </LinearLayout>
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.design.widget.TextInputLayout>
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<AutoCompleteTextView-->
+                        <!--android:id="@+id/student_name"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="@string/prompt_student_name"-->
+                        <!--android:inputType="text"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:singleLine="true" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/student_number"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="@string/prompt_student_number"-->
+                        <!--android:imeActionId="@+id/login"-->
+                        <!--android:imeActionLabel="@string/action_student_number"-->
+                        <!--android:imeOptions="actionUnspecified"-->
+                        <!--android:inputType="text"-->
+                        <!--android:maxLines="1"-->
+                        <!--android:singleLine="true" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnCreateStudent"-->
+                    <!--style="?android:textAppearanceSmall"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:text="@string/action_create_student"-->
+                    <!--android:textStyle="bold" />-->
+
+                <!--<Button-->
+                    <!--android:id="@+id/btnCancelCreateStudent"-->
+                    <!--style="?android:textAppearanceSmall"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--android:text="@string/action_cancel_create"-->
+                    <!--android:textStyle="bold" />-->
+
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
     <include
-        layout="@layout/register_card_view"
+        layout="@layout/buy_item_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <include
-        layout="@layout/buy_item_view"
+        layout="@layout/login_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <include
+        layout="@layout/reg_student_form_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
