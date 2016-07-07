@@ -1,7 +1,7 @@
 package com.example.wladek.pocketcard;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,14 +24,12 @@ import com.example.wladek.pocketcard.helper.DatabaseHelper;
 public class HomeActivity extends AppCompatActivity {
     DatabaseHelper myDb;
 
-    Button btnBuyBack;
     Button btnCreateStudent;
     Button btnCancelCreateStudent;
     Button btnSkipLogin;
 
     ProgressBar create_progress;
 
-    LinearLayout buyLayOut;
     LinearLayout homeLayOut;
     LinearLayout logInLayOut;
     LinearLayout createStudentLayOut;
@@ -66,22 +64,18 @@ public class HomeActivity extends AppCompatActivity {
          * Logic buttons switch
          */
 
-        btnBuyBack = (Button) findViewById(R.id.btnBuyBack);
         btnCreateStudent = (Button)findViewById(R.id.btnCreateStudent);
         btnCancelCreateStudent = (Button)findViewById(R.id.btnCancelCreateStudent);
         btnSkipLogin = (Button)findViewById(R.id.btnSkipLogin);
 
         create_progress = (ProgressBar)findViewById(R.id.create_progress);
 
-        buyLayOut = (LinearLayout) findViewById(R.id.buyLayOut);
         homeLayOut = (LinearLayout) findViewById(R.id.homeLayout);
         logInLayOut = (LinearLayout) findViewById(R.id.logInLayOut);
         createStudentLayOut = (LinearLayout) findViewById(R.id.createStudentLayOut);
 
-        lstShopItems = (ListView) findViewById(R.id.lstShopItems);
 
         //Hide layouts
-        buyLayOut.setVisibility(View.INVISIBLE);
         logInLayOut.setVisibility(View.INVISIBLE);
         createStudentLayOut.setVisibility(View.INVISIBLE);
 
@@ -108,8 +102,8 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_buy:
 
-                        buyLayOut.setVisibility(View.VISIBLE);
-
+                        Intent intent = new Intent(HomeActivity.this , BuyScreenActivity.class);
+                        startActivity(intent);
                         break;
 
                     case R.id.nav_settings:
@@ -136,13 +130,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        btnBuyBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideViews();
-                buyLayOut.setVisibility(View.INVISIBLE);
-            }
-        });
 
         btnSkipLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +150,8 @@ public class HomeActivity extends AppCompatActivity {
         /**
          * Populate my list view
          */
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_view_row, R.id.textListItem, shopItems);
-        lstShopItems.setAdapter(adapter);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_view_row, R.id.textListItem, shopItems);
+//        lstShopItems.setAdapter(adapter);
 
     }
 
@@ -204,7 +191,6 @@ public class HomeActivity extends AppCompatActivity {
     public void hideViews(){
         homeLayOut.setVisibility(View.INVISIBLE);
         logInLayOut.setVisibility(View.INVISIBLE);
-        buyLayOut.setVisibility(View.INVISIBLE);
         createStudentLayOut.setVisibility(View.INVISIBLE);
         create_progress.setVisibility(View.INVISIBLE);
     }
