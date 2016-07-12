@@ -38,10 +38,6 @@ public class HomeActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
-    String[] shopItems = {"Bread", "Cake", "Mandazi", "Doughnut", "Book", "Pencil"};
-
-    ListView lstShopItems;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,17 +138,9 @@ public class HomeActivity extends AppCompatActivity {
         btnCreateStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                create_progress.animate();
                 create_progress.setVisibility(View.VISIBLE);
             }
         });
-
-        /**
-         * Populate my list view
-         */
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_view_row, R.id.textListItem, shopItems);
-//        lstShopItems.setAdapter(adapter);
-
     }
 
     @Override
@@ -194,37 +182,4 @@ public class HomeActivity extends AppCompatActivity {
         createStudentLayOut.setVisibility(View.INVISIBLE);
         create_progress.setVisibility(View.INVISIBLE);
     }
-
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//        Toast.makeText(this , "Importing ", Toast.LENGTH_LONG);
-//        // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_import) {
-//
-//            Toast.makeText(this , "Importing ", Toast.LENGTH_LONG);
-//
-//        } else  if (id == R.id.nav_items) {
-//
-//            Toast.makeText(HomeActivity.this , "Navigation ", Toast.LENGTH_LONG);
-//
-//        } else if (id == R.id.nav_settings) {
-//
-//            Toast.makeText(this , "Settings", Toast.LENGTH_LONG);
-//
-//        } else if (id == R.id.nav_share) {
-//
-//            Toast.makeText(this , "Share", Toast.LENGTH_LONG);
-//
-//        } else if (id == R.id.nav_sync) {
-//
-//            Toast.makeText(this , "Syncronising", Toast.LENGTH_LONG);
-//        }
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
 }
