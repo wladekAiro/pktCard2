@@ -1,26 +1,37 @@
 package com.example.wladek.pocketcard.pojo;
 
+import java.io.Serializable;
+
 /**
  * Created by wladek on 7/3/16.
  */
-public class ShopItem {
+public class ShopItem implements Serializable{
     private String name;
-    private Long id;
+    private String code;
+    private Double unitPrice;
 
     public String getName() {
         return name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -35,12 +46,12 @@ public class ShopItem {
 
         ShopItem shopItem = (ShopItem) o;
 
-        return id.equals(shopItem.id);
+        return code.equals(shopItem.code);
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return code.hashCode();
     }
 }

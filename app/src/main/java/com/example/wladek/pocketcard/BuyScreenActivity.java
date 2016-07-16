@@ -2,8 +2,6 @@ package com.example.wladek.pocketcard;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -17,26 +15,15 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
     ActionBar actionBar;
     ViewPager viewPager;
-    FragmentPagerAdapter pagerAdapter;
+    BuyViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.buy_activity_layout);
+//        setContentView(R.layout.buy_activity_layout);
         viewPager = new ViewPager(this);
         viewPager.setId(R.id.buy_pager);
         setContentView(viewPager);
-//        pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-//            @Override
-//            public int getCount() {
-//                return 0;
-//            }
-//
-//            @Override
-//            public Fragment getItem(int position) {
-//                return null;
-//            }
-//        };
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -47,15 +34,32 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
         actionBar.addTab(actionBar.newTab().setText("Cart").setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText("Quick order").setTabListener(this));
 
-        final BuyViewPagerAdapter adapter = new BuyViewPagerAdapter
+        adapter = new BuyViewPagerAdapter
                 (getSupportFragmentManager(), actionBar.getTabCount());
 
         viewPager.setAdapter(adapter);
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
-
+        viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override

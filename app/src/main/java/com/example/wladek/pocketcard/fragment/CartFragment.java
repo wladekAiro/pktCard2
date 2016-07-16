@@ -13,9 +13,13 @@ import com.example.wladek.pocketcard.R;
  * Created by wladek on 7/13/16.
  */
 public class CartFragment extends Fragment {
+    View myView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_mycart, container, false);
+
+        myView = inflater.inflate(R.layout.fragment_mycart, container, false);
+
+        return myView;
     }
 }
