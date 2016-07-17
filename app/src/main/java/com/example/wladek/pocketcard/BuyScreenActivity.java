@@ -6,12 +6,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 
+import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pagerAdapters.BuyViewPagerAdapter;
+import com.example.wladek.pocketcard.pojo.ShopItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by wladek on 7/7/16.
  */
 public class BuyScreenActivity extends ActionBarActivity implements ActionBar.TabListener {
+    DatabaseHelper myDb;
 
     ActionBar actionBar;
     ViewPager viewPager;
@@ -19,15 +24,15 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        myDb  = new DatabaseHelper(BuyScreenActivity.this);
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.buy_activity_layout);
         viewPager = new ViewPager(this);
         viewPager.setId(R.id.buy_pager);
         setContentView(viewPager);
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayOptions(0 , ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
         //set tabs
         actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(this));
@@ -36,6 +41,9 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
         adapter = new BuyViewPagerAdapter
                 (getSupportFragmentManager(), actionBar.getTabCount());
+
+        //Pass this list to Buy page adapter
+        adapter.setShopItems((ArrayList<ShopItem>)getIntent().getSerializableExtra("item_list"));
 
         viewPager.setAdapter(adapter);
 

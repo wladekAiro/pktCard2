@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.nav_buy:
 
                         Intent intent = new Intent(HomeActivity.this, BuyScreenActivity.class);
-                        intent.putExtra("item_list" , getShopItems());
+                        intent.putExtra("item_list", getShopItems());
                         startActivity(intent);
                         break;
 
