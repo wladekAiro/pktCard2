@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity {
         shopItems.add(shopItem);
 
         shopItem = new ShopItem();
-        shopItem.setName("burn");
+        shopItem.setName("Burn");
         shopItem.setCode("BRN");
         shopItem.setUnitPrice(new Double(10));
         shopItems.add(shopItem);

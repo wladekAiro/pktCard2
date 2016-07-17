@@ -1,10 +1,7 @@
 package com.example.wladek.pocketcard.fragment;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,18 +25,25 @@ import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Created by wladek on 7/13/16.
  */
 public class SearchFragment extends Fragment {
 
+    Logger logger = Logger.getLogger("SEARCH FRAGMENT");
+
+    TextView productName;
+    Button btnAddToCart;
+
     View myFragmentView;
     SearchView search;
     Typeface typeface;
     ListView searchResults;
     String found = "N";
-    SQLiteDatabase db;
+    DatabaseHelper databaseHelper;
+
 
     //Array list to hold data pulled from the server
     ArrayList<ShopItem> itemResults;
@@ -50,8 +54,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
-        db = databaseHelper.getWritableDatabase();
+        databaseHelper = new DatabaseHelper(getActivity());
     }
 
     @Nullable
@@ -67,6 +70,7 @@ public class SearchFragment extends Fragment {
 
         myFragmentView = inflater.inflate(R.layout.fragment_search, container, false);
         search = (SearchView) myFragmentView.findViewById(R.id.searchViewItem);
+
         search.setQueryHint("Start typing to search ...");
 
 
@@ -93,9 +97,8 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if (newText.length() > 2) {
+                if (newText.length() > 1) {
                     searchResults.setVisibility(View.VISIBLE);
-                    Log.d(" ++++ ISEARCHING ", " SEARCH FOR : " + newText);
                     MyAssyncTask m = (MyAssyncTask) new MyAssyncTask().execute(newText);
                 } else {
                     searchResults.setVisibility(View.INVISIBLE);
@@ -199,8 +202,6 @@ public class SearchFragment extends Fragment {
             this.count = shopItems.size();
             this.context = context;
             typeface = Typeface.createFromAsset(context.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
-
-            Log.d(" LOCATION ++++++ ", "Inside search results adapter ");
         }
 
         @Override
@@ -239,6 +240,7 @@ public class SearchFragment extends Fragment {
 
             viewHolder.productName.setText(shopItem.getName());
             viewHolder.productName.setTypeface(typeface);
+
             viewHolder.btnAddToCart.setOnClickListener(new AddToCartClickListener("btnAddToCart", shopItem, context));
 
             return view;
@@ -251,13 +253,8 @@ public class SearchFragment extends Fragment {
     }
 
     public class AddToCartClickListener implements View.OnClickListener {
-//        public static final String DATABASE_NAME = "pocketcard.db";
-        public static final String TABLE_CART = "tbl_cart";
-
         String btn_name;
         ShopItem shopItem;
-        int tmpQnty;
-        Double totalValue;
         Context context;
 
         public AddToCartClickListener(String btn_name, ShopItem shopItem, Context context) {
@@ -272,64 +269,24 @@ public class SearchFragment extends Fragment {
         //If the quantity of the item has reached 10, then do nothing.
         @Override
         public void onClick(View view) {
-//            db = getContext().openOrCreateDatabase(DATABASE_NAME, context.MODE_APPEND, null);
 
-//            DatabaseHelper myDb = new DatabaseHelper(getActivity());
-//
-//            db = myDb.getWritableDatabase();
+            logger.config("CLICKED");
 
-            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CART + " WHERE ITEM_CORD =" +shopItem.getCode(), null);
+            try {
 
-            if (cursor.getCount() == 0) {
+                if (shopItem != null) {
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("ITEM_NAME", shopItem.getName());
-                contentValues.put("ITEM_CORD", shopItem.getCode());
-                contentValues.put("UNIT_PRICE", shopItem.getUnitPrice());
-                contentValues.put("ITEM_QTY", 1);
-                contentValues.put("TOTAL_VALUE", shopItem.getUnitPrice());
+                    databaseHelper.insertIntoCart(shopItem);
 
-                Long result = db.insert(TABLE_CART, null, contentValues);
-
-                if (result == -1) {
-
-                    Log.d("ERROR INSERT ", " QUERY FAILED ON " + TABLE_CART);
-
-                } else {
-
-                    Toast.makeText(context, shopItem.getName() + " added to cart",
-                            Toast.LENGTH_SHORT);
-
-                    Log.d("SUCCESS INSERT ", " QUERY SUCCESS ON " + TABLE_CART);
-                }
-            }else {
-
-                if (cursor.moveToFirst()){
-
-                    do {
-                        tmpQnty = cursor.getInt(4)+1;
-                        totalValue = shopItem.getUnitPrice()*tmpQnty;
-                    }while (cursor.moveToNext());
-                }
-
-                if (tmpQnty < 6){
-
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put("ITEM_QTY", tmpQnty);
-                    contentValues.put("TOTAL_VALUE", totalValue);
-
-                    int result = db.update(TABLE_CART , contentValues ,"ITEM_CORD='"+shopItem.getCode()+"'" +
-                            " AND ITEM_NAME='"+shopItem.getName()+"'" , null);
-
-                    Log.d(" UPDATE +++++++ ", " RESULT"+result);
+                    System.out.print(" +++++++++++++ ADD TO CART CLICKED +++++++++++++++ ");
 
                     Toast.makeText(context, shopItem.getName() + " added to cart",
                             Toast.LENGTH_SHORT);
                 }
 
+            }catch (NullPointerException e){
+                e.printStackTrace();
             }
-
-            db.close();
 
         }
     }
