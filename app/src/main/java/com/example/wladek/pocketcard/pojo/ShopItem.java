@@ -8,7 +8,9 @@ import java.io.Serializable;
 public class ShopItem implements Serializable{
     private String name;
     private String code;
+    private int cartQuantity;
     private Double unitPrice;
+    private Double totalCartValue;
 
     public String getName() {
         return name;
@@ -53,5 +55,21 @@ public class ShopItem implements Serializable{
     @Override
     public int hashCode() {
         return code.hashCode();
+    }
+
+    public Double getTotalCartValue() {
+        return totalCartValue;
+    }
+
+    public void setTotalCartValue(Double totalCartValue) {
+        this.totalCartValue = totalCartValue;
+    }
+
+    public int getCartQuantity() {
+        return cartQuantity;
+    }
+
+    public void setCartQuantity(int cartQuantity) {
+        this.cartQuantity = cartQuantity;
     }
 }

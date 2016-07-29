@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by wladek on 7/5/16.
@@ -132,5 +134,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
         }
+    }
+
+    public List<ShopItem> getCartItems(){
+
+        List<ShopItem> shopItems = new ArrayList<ShopItem>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_CART, null);
+
+        if (res.getCount() > 0){
+            while (res.moveToNext()) {
+
+                ShopItem shopItem = new ShopItem();
+                shopItem.setName(res.getString(1));
+                shopItem.setCode(res.getString(2));
+                shopItem.setUnitPrice(res.getDouble(3));
+                shopItem.setCartQuantity(res.getInt(4));
+                shopItem.setTotalCartValue(res.getDouble(5));
+
+                shopItems.add(shopItem);
+            }
+        }
+
+        return shopItems;
     }
 }
