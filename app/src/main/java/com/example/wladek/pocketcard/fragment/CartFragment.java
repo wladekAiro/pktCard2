@@ -1,14 +1,21 @@
 package com.example.wladek.pocketcard.fragment;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.wladek.pocketcard.BuyScreenActivity;
@@ -72,24 +79,117 @@ public class CartFragment extends Fragment {
         if (totalCartItemCount == 0){
             txtItemText.setVisibility(myView.INVISIBLE);
             txtTotalAmount.setVisibility(myView.INVISIBLE);
-            txtTotalAmount.setVisibility(myView.INVISIBLE);
             btnCheckOut.setVisibility(myView.INVISIBLE);
             lvl.setVisibility(myView.INVISIBLE);
             txtCartEmpty.setVisibility(myView.VISIBLE);
         }else {
             txtItemText.setVisibility(myView.VISIBLE);
             txtTotalAmount.setVisibility(myView.VISIBLE);
-            txtTotalAmount.setVisibility(myView.VISIBLE);
             btnCheckOut.setVisibility(myView.VISIBLE);
             lvl.setVisibility(myView.VISIBLE);
             txtCartEmpty.setVisibility(myView.INVISIBLE);
         }
 
+        txtItemCount.setText(""+totalCartItemCount);
+        txtTotalAmount.setText("Ksh."+totalCartValue);
+
+        txtItemText.setTypeface(typeface);
+        txtCartEmpty.setTypeface(typeface);
+        txtTotalAmount.setTypeface(typeface);
+        btnCheckOut.setTypeface(typeface);
+
+        lvl.setAdapter(new CustomListOne(this.getActivity() , cartList));
+        btnCheckOut.setOnClickListener(new MyCheckOutClickListener("btnCheckOut"));
+
         return myView;
+    }
+
+    public class CustomListOne extends BaseAdapter{
+
+        private LayoutInflater layoutInflater;
+        ViewHolder viewHolder;
+        private ArrayList<ShopItem> cartList = new ArrayList<ShopItem>();
+        int cartCounter;
+        Typeface type;
+        Context context;
+
+        public CustomListOne(Context context, ArrayList<ShopItem> cartList) {
+            layoutInflater = LayoutInflater.from(context);
+            this.cartList = cartList;
+            this.cartCounter = cartList.size();
+            this.context = context;
+            type = Typeface.createFromAsset(context.getAssets(), "fonts/AsimovNar.otf");
+
+        }
+
+        @Override
+        public int getCount() {
+            return cartCounter;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return cartList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ShopItem tmpIem =
+                    cartList.get(position);
+
+            if (convertView == null){
+                convertView = layoutInflater.inflate(R.layout.listone_custom , null);
+
+                viewHolder = new ViewHolder();
+
+                viewHolder.btnRmFromCart = (ImageButton) convertView.findViewById(R.id.imgBtnRmFromCart);
+                viewHolder.spnQty = (Spinner) convertView.findViewById(R.id.spnQty);
+                viewHolder.txtCartItemName = (TextView) convertView.findViewById(R.id.txtCartItemName);
+                viewHolder.txtCartItemValue = (TextView) convertView.findViewById(R.id.txtCartItemValue);
+
+                convertView.setTag(viewHolder);
+            }else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            viewHolder.txtCartItemName.setText(tmpIem.getName());
+            viewHolder.txtCartItemValue.setText(""+tmpIem.getTotalCartValue());
+
+            viewHolder.txtCartItemName.setTypeface(type);
+            viewHolder.txtCartItemValue.setTypeface(type);
+
+            return null;
+        }
+    }
+
+    static class ViewHolder{
+        ImageButton btnRmFromCart;
+        Spinner spnQty;
+        TextView txtCartItemName;
+        TextView txtCartItemValue;
+    }
+
+    public class MyCheckOutClickListener implements View.OnClickListener{
+
+        public MyCheckOutClickListener(String btnCheckOut) {
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 
     private void getCartData() {
         cartList.clear();
         cartList.addAll(databaseHelper.getCartItems());
+
+        Log.e("LIST SIZE" , "+++ "+cartList.size());
     }
 }
