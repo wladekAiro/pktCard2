@@ -3,6 +3,7 @@ package com.example.wladek.pocketcard.pagerAdapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.View;
 
 import com.example.wladek.pocketcard.fragment.CartFragment;
 import com.example.wladek.pocketcard.fragment.QuickOrderFragment;
@@ -10,6 +11,8 @@ import com.example.wladek.pocketcard.fragment.SearchFragment;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by wladek on 7/13/16.
@@ -19,10 +22,14 @@ public class BuyViewPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
     ArrayList<ShopItem> shopItems;
+    private Map<Integer , String> mFragmentTags;
+    private FragmentManager fm;
 
     public BuyViewPagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
+        this.fm = fm;
+        mFragmentTags = new HashMap<Integer , String>();
     }
 
     @Override
@@ -44,6 +51,30 @@ public class BuyViewPagerAdapter extends FragmentStatePagerAdapter {
                 return null;
 
         }
+    }
+
+    @Override
+    public Object instantiateItem(View container, int position) {
+        Object obj =  super.instantiateItem(container, position);
+
+        if (obj instanceof Fragment){
+            //Record fragment tag here
+            Fragment f = (Fragment) obj;
+            String tag = f.getTag();
+            mFragmentTags.put(position , tag);
+        }
+
+        return obj;
+    }
+
+    public Fragment getFragment(int position){
+        String tag = mFragmentTags.get(position);
+
+        if (tag == null){
+            return null;
+        }
+
+        return fm.findFragmentByTag(tag);
     }
 
     @Override

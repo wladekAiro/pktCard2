@@ -278,10 +278,8 @@ public class SearchFragment extends Fragment {
 
                     databaseHelper.insertIntoCart(shopItem);
 
-                    System.out.print(" +++++++++++++ ADD TO CART CLICKED +++++++++++++++ ");
-
                     Toast.makeText(context, shopItem.getName() + " added to cart",
-                            Toast.LENGTH_SHORT);
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }catch (NullPointerException e){

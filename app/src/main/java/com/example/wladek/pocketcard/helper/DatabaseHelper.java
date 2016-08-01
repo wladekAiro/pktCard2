@@ -159,4 +159,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return shopItems;
     }
+
+    public int updateCart(int quantity , ShopItem shopItem){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ITEM_QTY", quantity);
+        contentValues.put("TOTAL_VALUE" , (shopItem.getUnitPrice() * quantity));
+
+        int result = db.update(TABLE_CART, contentValues, "ITEM_CORD='" + shopItem.getCode() + "'" +
+                " AND ITEM_NAME='" + shopItem.getName() + "'", null);
+
+        return result;
+    }
+
+    public void removeFromCart(ShopItem shopItem){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(TABLE_CART , "ITEM_CORD =?", new String[]{shopItem.getCode()} );
+    }
 }

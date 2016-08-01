@@ -2,6 +2,8 @@ package com.example.wladek.pocketcard;
 
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -43,7 +45,7 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
                 (getSupportFragmentManager(), actionBar.getTabCount());
 
         //Pass this list to Buy page adapter
-        adapter.setShopItems((ArrayList<ShopItem>)getIntent().getSerializableExtra("item_list"));
+        adapter.setShopItems((ArrayList<ShopItem>) getIntent().getSerializableExtra("item_list"));
 
         viewPager.setAdapter(adapter);
 
@@ -55,7 +57,14 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
             @Override
             public void onPageSelected(int position) {
+
                 actionBar.setSelectedNavigationItem(position);
+
+                Fragment fragment = ((FragmentStatePagerAdapter)viewPager.getAdapter()).getItem(position);
+
+                if (position == 2 && fragment != null){
+                    fragment.onResume();
+                }
             }
 
             @Override
