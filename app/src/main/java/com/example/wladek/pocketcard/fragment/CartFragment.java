@@ -41,6 +41,7 @@ public class CartFragment extends Fragment {
     TextView txtItemCount;
     TextView txtTotalAmount;
     Button btnCheckOut;
+    Button btnRefreshCart;
     TextView txtCartEmpty;
     DatabaseHelper databaseHelper;
 
@@ -73,6 +74,7 @@ public class CartFragment extends Fragment {
         txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
         txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
         btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+        btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
         lvl = (ListView) myView.findViewById(R.id.listCartView);
         txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 
@@ -83,6 +85,7 @@ public class CartFragment extends Fragment {
             btnCheckOut.setVisibility(myView.INVISIBLE);
             lvl.setVisibility(myView.INVISIBLE);
             txtItemCount.setVisibility(myView.INVISIBLE);
+            btnRefreshCart.setVisibility(myView.INVISIBLE);
             txtCartEmpty.setVisibility(myView.VISIBLE);
         }else {
             txtItemText.setVisibility(myView.VISIBLE);
@@ -90,6 +93,7 @@ public class CartFragment extends Fragment {
             btnCheckOut.setVisibility(myView.VISIBLE);
             lvl.setVisibility(myView.VISIBLE);
             txtItemCount.setVisibility(myView.VISIBLE);
+            btnRefreshCart.setVisibility(myView.VISIBLE);
             txtCartEmpty.setVisibility(myView.INVISIBLE);
         }
 
@@ -101,8 +105,9 @@ public class CartFragment extends Fragment {
         txtTotalAmount.setTypeface(typeface);
         btnCheckOut.setTypeface(typeface);
 
-        lvl.setAdapter(new CustomListOne(this.getActivity() , cartList));
+        lvl.setAdapter(new CustomListOne(this.getActivity(), cartList));
         btnCheckOut.setOnClickListener(new MyCheckOutClickListener("btnCheckOut"));
+        btnRefreshCart.setOnClickListener(new MyPersonalClickListener("btnRefreshCart"));
 
         return myView;
     }
@@ -239,6 +244,7 @@ public class CartFragment extends Fragment {
 //                Intent intent = new Intent(getActivity() ,Checkout.class);
 //                startActivity(intent);
                 Toast.makeText(getContext() , "Checked out " , Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -252,6 +258,10 @@ public class CartFragment extends Fragment {
         public MyPersonalClickListener(String buttonName, ShopItem shopItem) {
             this.buttonName = buttonName;
             this.shopItem = shopItem;
+        }
+
+        public MyPersonalClickListener(String buttonName) {
+            this.buttonName = buttonName;
         }
 
         @Override
@@ -273,6 +283,7 @@ public class CartFragment extends Fragment {
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
                 TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
                 Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+                Button btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
                 ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
                 TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 
@@ -290,6 +301,7 @@ public class CartFragment extends Fragment {
                     txtItemText.setVisibility(myView.INVISIBLE);
                     txtTotalAmount.setVisibility(myView.INVISIBLE);
                     btnCheckOut.setVisibility(myView.INVISIBLE);
+                    btnRefreshCart.setVisibility(myView.INVISIBLE);
                     lvl.setVisibility(myView.INVISIBLE);
                     txtItemCount.setVisibility(myView.INVISIBLE);
                     txtCartEmpty.setVisibility(myView.VISIBLE);
@@ -297,6 +309,7 @@ public class CartFragment extends Fragment {
                     txtItemText.setVisibility(myView.VISIBLE);
                     txtTotalAmount.setVisibility(myView.VISIBLE);
                     btnCheckOut.setVisibility(myView.VISIBLE);
+                    btnRefreshCart.setVisibility(myView.VISIBLE);
                     lvl.setVisibility(myView.VISIBLE);
                     txtItemCount.setVisibility(myView.VISIBLE);
                     txtCartEmpty.setVisibility(myView.INVISIBLE);
@@ -304,6 +317,49 @@ public class CartFragment extends Fragment {
 
                 lvl.setAdapter(new CustomListOne(getActivity(), cartList));
 
+            }else if (buttonName.equals("btnRefreshCart")){
+
+                getCartData();
+
+                Toast.makeText(getActivity() , " Refreshing .... " , Toast.LENGTH_LONG).show();
+
+                TextView txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
+                TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
+                TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
+                Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+                Button btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
+                ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
+                TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
+
+                totalCartItemCount = cartList.size();
+                totalCartValue = new Double(0);
+
+                for (int i = 0; i < cartList.size(); i++) {
+                    totalCartValue = (totalCartValue + cartList.get(i).getTotalCartValue());
+                }
+
+                txtItemCount.setText(""+totalCartItemCount);
+                txtTotalAmount.setText("Ksh."+totalCartValue);
+
+                if (totalCartItemCount == 0){
+                    txtItemText.setVisibility(myView.INVISIBLE);
+                    txtTotalAmount.setVisibility(myView.INVISIBLE);
+                    btnCheckOut.setVisibility(myView.INVISIBLE);
+                    btnRefreshCart.setVisibility(myView.INVISIBLE);
+                    lvl.setVisibility(myView.INVISIBLE);
+                    txtItemCount.setVisibility(myView.INVISIBLE);
+                    txtCartEmpty.setVisibility(myView.VISIBLE);
+                }else {
+                    txtItemText.setVisibility(myView.VISIBLE);
+                    txtTotalAmount.setVisibility(myView.VISIBLE);
+                    btnCheckOut.setVisibility(myView.VISIBLE);
+                    btnRefreshCart.setVisibility(myView.VISIBLE);
+                    lvl.setVisibility(myView.VISIBLE);
+                    txtItemCount.setVisibility(myView.VISIBLE);
+                    txtCartEmpty.setVisibility(myView.INVISIBLE);
+                }
+
+                lvl.setAdapter(new CustomListOne(getActivity(), cartList));
             }
 
         }

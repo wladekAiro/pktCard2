@@ -25,7 +25,7 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
     BuyViewPagerAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         myDb  = new DatabaseHelper(BuyScreenActivity.this);
         super.onCreate(savedInstanceState);
         viewPager = new ViewPager(this);
@@ -60,11 +60,14 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
                 actionBar.setSelectedNavigationItem(position);
 
-                Fragment fragment = ((FragmentStatePagerAdapter)viewPager.getAdapter()).getItem(position);
 
-                if (position == 2 && fragment != null){
-                    fragment.onResume();
-                }
+//                Fragment fragment = ((FragmentStatePagerAdapter)viewPager.getAdapter()).getItem(position);
+//
+//                if (position == 2 && fragment != null){
+//                    fragment.onCreate(savedInstanceState);
+//                }
+//
+//                adapter.notifyDataSetChanged();
             }
 
             @Override
