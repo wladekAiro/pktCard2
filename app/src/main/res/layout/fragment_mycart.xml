@@ -70,16 +70,16 @@
             android:layout_toRightOf="@+id/txtItemText"
             android:layout_toEndOf="@+id/txtItemText" />
 
-        <Button
+        <ImageButton
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refresh"
             android:id="@+id/btnRefreshCart"
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/btnCheckOut"
             android:layout_alignStart="@+id/btnCheckOut"
-            android:layout_marginLeft="100dp"/>
+            android:layout_marginLeft="100dp"
+            android:src="@mipmap/refresh_48" />
     </RelativeLayout>
 
     <ListView

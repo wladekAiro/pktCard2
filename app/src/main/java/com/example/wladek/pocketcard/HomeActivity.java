@@ -2,6 +2,7 @@ package com.example.wladek.pocketcard;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,12 +46,16 @@ public class HomeActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    NfcAdapter nfcAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myDb = new DatabaseHelper(this);
         setContentView(R.layout.activity_home);
         inserItems();
+
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,9 +118,6 @@ public class HomeActivity extends AppCompatActivity {
 
                     case R.id.nav_settings:
                         Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_view_items:
-                        Toast.makeText(getApplicationContext(), "View item list ", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_update:
                         Toast.makeText(getApplicationContext(), " Update ", Toast.LENGTH_SHORT).show();

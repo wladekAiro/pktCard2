@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +42,7 @@ public class CartFragment extends Fragment {
     TextView txtItemCount;
     TextView txtTotalAmount;
     Button btnCheckOut;
-    Button btnRefreshCart;
+    ImageButton btnRefreshCart;
     TextView txtCartEmpty;
     DatabaseHelper databaseHelper;
 
@@ -74,7 +75,7 @@ public class CartFragment extends Fragment {
         txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
         txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
         btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
-        btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
+        btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
         lvl = (ListView) myView.findViewById(R.id.listCartView);
         txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 
