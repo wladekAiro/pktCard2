@@ -1,33 +1,34 @@
 package com.example.wladek.pocketcard;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class HomeActivity extends AppCompatActivity {
     DatabaseHelper myDb;
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     Button btnCreateStudent;
     Button btnCancelCreateStudent;
     Button btnSkipLogin;
+    Button btnLogIn;
 
     ProgressBar create_progress;
 
@@ -48,6 +50,10 @@ public class HomeActivity extends AppCompatActivity {
 
     NfcAdapter nfcAdapter;
 
+    MaterialDialog.Builder builder;
+
+    MaterialDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,8 @@ public class HomeActivity extends AppCompatActivity {
         inserItems();
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        checkIfEnabled();
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         btnCreateStudent = (Button) findViewById(R.id.btnCreateStudent);
         btnCancelCreateStudent = (Button) findViewById(R.id.btnCancelCreateStudent);
         btnSkipLogin = (Button) findViewById(R.id.btnSkipLogin);
+        btnLogIn = (Button) findViewById(R.id.btnLogIn);
 
         create_progress = (ProgressBar) findViewById(R.id.create_progress);
 
@@ -107,25 +116,12 @@ public class HomeActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_register:
                         logInLayOut.setVisibility(View.VISIBLE);
-
                         break;
                     case R.id.nav_buy:
-
-                        Intent intent = new Intent(HomeActivity.this, BuyScreenActivity.class);
-                        intent.putExtra("item_list", getShopItems());
-                        startActivity(intent);
-                        break;
-
-                    case R.id.nav_settings:
-                        Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                        checkNfc(nfcAdapter, HomeActivity.this);
                         break;
                     case R.id.nav_update:
                         Toast.makeText(getApplicationContext(), " Update ", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.demo_student:
-
-                        createStudentLayOut.setVisibility(View.VISIBLE);
-
                         break;
                     default:
                         break;
@@ -141,8 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         btnSkipLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hideViews();
-                createStudentLayOut.setVisibility(View.VISIBLE);
+                askForLogIn();
             }
         });
 
@@ -152,6 +147,152 @@ public class HomeActivity extends AppCompatActivity {
                 create_progress.setVisibility(View.VISIBLE);
             }
         });
+
+        btnLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, RegisterCardActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void checkIfEnabled() {
+        if (nfcAdapter != null) {
+            Toast.makeText(this , "Nfc supported" , Toast.LENGTH_LONG).show();
+        }else {
+            builder = new MaterialDialog.Builder(this);
+            builder.title("NFC Not Supported !");
+            builder.content("This device does not support NFC. You will not be able to access some features of this app.");
+            builder.positiveText("Continue");
+            builder.negativeText("Exit App");
+            builder.cancelable(false);
+            dialog = builder.build();
+            dialog.show();
+
+            onNewIntent(getIntent());
+
+            builder.onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    dialog.dismiss();
+                }
+            });
+
+            builder.onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    dialog.dismiss();
+                    finish();
+                }
+
+            });
+        }
+    }
+
+    private void askForLogIn() {
+//        hideViews();
+//        createStudentLayOut.setVisibility(View.VISIBLE);
+
+        builder = new MaterialDialog.Builder(this);
+        builder.title("Log in required !");
+        builder.content("You must log in as an administrator to register new card.");
+        builder.positiveText("Ok");
+        builder.negativeText("Cancel");
+        builder.cancelable(false);
+        dialog = builder.build();
+        dialog.show();
+
+        onNewIntent(getIntent());
+
+        builder.onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(MaterialDialog dialog, DialogAction which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(MaterialDialog dialog, DialogAction which) {
+                dialog.dismiss();
+                hideViews();
+                homeLayOut.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void checkNfc(NfcAdapter nfcAdapter, final Context context) {
+        if (nfcAdapter != null) {
+            if (nfcAdapter != null && nfcAdapter.isEnabled()) {
+
+                builder = new MaterialDialog.Builder(context);
+                builder.title("Swipe card");
+                builder.content("waiting for card");
+                builder.negativeText("Cancel");
+                builder.progress(true, 0);
+                builder.cancelable(false);
+                dialog = builder.build();
+                dialog.show();
+
+                onNewIntent(getIntent());
+
+                builder.onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        Toast.makeText(context, "Card not detected", Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                        homeLayOut.setVisibility(View.VISIBLE);
+                    }
+                });
+
+            } else {
+
+                builder = new MaterialDialog.Builder(context);
+                builder.content("Please enable the nfc adaptor to proceed");
+                builder.positiveText("Ok");
+                builder.cancelable(false);
+
+                dialog = builder.build();
+                dialog.show();
+
+                builder.onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        homeLayOut.setVisibility(View.VISIBLE);
+                    }
+                });
+
+            }
+        } else {
+            builder = new MaterialDialog.Builder(this);
+            builder.title("NFC Not Supported !");
+            builder.content("This device does not support NFC. You cannot access this feature.");
+            builder.positiveText("Continue");
+            builder.negativeText("Exit App");
+            builder.cancelable(false);
+            dialog = builder.build();
+            dialog.show();
+
+            onNewIntent(getIntent());
+
+            builder.onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    dialog.dismiss();
+                    homeLayOut.setVisibility(View.VISIBLE);
+                }
+            });
+
+            builder.onNegative(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(MaterialDialog dialog, DialogAction which) {
+                    dialog.dismiss();
+                    finish();
+                }
+
+            });
+        }
     }
 
     @Override
@@ -180,7 +321,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Importing ", Toast.LENGTH_LONG);
+            Toast.makeText(this, "Importing ", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -256,12 +397,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public ArrayList<ShopItem> getShopItems(){
+    public ArrayList<ShopItem> getShopItems() {
         ArrayList<ShopItem> shopItems = new ArrayList<ShopItem>();
 
         Cursor res = myDb.getAllShopItems();
 
-        if (res.getCount() > 0){
+        if (res.getCount() > 0) {
             while (res.moveToNext()) {
 
                 ShopItem shopItem = new ShopItem();
@@ -274,5 +415,59 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return shopItems;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
+
+            if (dialog != null) {
+
+                Toast.makeText(this, "Card detected", Toast.LENGTH_LONG).show();
+
+                dialog.dismiss();
+
+                intent = new Intent(HomeActivity.this, BuyScreenActivity.class);
+                intent.putExtra("item_list", getShopItems());
+                startActivity(intent);
+            }
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableForegroundDispatchSystem();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        disableForegroundDispatchSystem();
+    }
+
+ /*   @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+        ACRA.init(getApplication());
+    }*/
+
+    public void enableForegroundDispatchSystem() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        IntentFilter[] intentFilter = new IntentFilter[]{};
+
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+    }
+
+    public void disableForegroundDispatchSystem() {
+        nfcAdapter.disableForegroundDispatch(this);
     }
 }

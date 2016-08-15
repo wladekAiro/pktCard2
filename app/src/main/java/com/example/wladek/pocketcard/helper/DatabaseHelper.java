@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
 import java.math.BigInteger;
@@ -21,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "pocketcard.db";
     public static final String TABLE_ITEMS = "tbl_items";
+    public static final String TABLE_SCHOOLDETAILS = "tbl_schooldetails";
     public static final String TABLE_CART = "tbl_cart";
     public static final String TABLE_SUDENTS = "ID";
     public static final String COL2 = "NAME";
@@ -40,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " UNIT_PRICE DOUBLE , ITEM_QTY INTEGER ,TOTAL_VALUE DOUBLE)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SUDENTS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, STUDENT_NAME TEXT, STUDENT_NUMBER TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SCHOOLDETAILS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, SCHOOL_NAME TEXT, SCHOOL_CODE TEXT , LOGGED_IN INTEGER)");
     }
 
     @Override
@@ -47,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_ITEMS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUDENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHOOLDETAILS);
         onCreate(db);
     }
 
@@ -178,4 +182,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete(TABLE_CART , "ITEM_CORD =?", new String[]{shopItem.getCode()} );
     }
+
+    public boolean insertSchoolDetails(String schoolName , String schoolCord , int loggedIn){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_SCHOOLDETAILS, null);
+
+        if (res.getCount() > 0){
+            return false;
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("SCHOOL_NAME", schoolName);
+        contentValues.put("SCHOOL_CODE", schoolCord);
+        contentValues.put("LOGGED_IN", loggedIn);
+
+        Long result =  db.insert(TABLE_SCHOOLDETAILS, null, contentValues);
+
+        if(result == -1){
+            return false;
+        }else {
+            return  true;
+        }
+
+    }
+
+    public SchoolDetails getSchoolDetails(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        SchoolDetails schoolDetails = null;
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_SCHOOLDETAILS, null);
+
+        if (res.getCount() > 0){
+                schoolDetails = new SchoolDetails();
+                schoolDetails.setSchoolName(res.getString(1));
+                schoolDetails.setSchoolcode(res.getString(2));
+                schoolDetails.setLoggedIn(res.getInt(3));
+        }
+
+        return schoolDetails;
+    }
+
 }

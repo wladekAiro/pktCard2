@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class CartFragment extends Fragment {
     View myView;
     ArrayList<ShopItem> cartList = new ArrayList<ShopItem>();
-    int count = 0;
     int totalCartItemCount = 0;
     Double totalCartValue = new Double(0);
     ListView lvl;
@@ -86,7 +85,7 @@ public class CartFragment extends Fragment {
             btnCheckOut.setVisibility(myView.INVISIBLE);
             lvl.setVisibility(myView.INVISIBLE);
             txtItemCount.setVisibility(myView.INVISIBLE);
-            btnRefreshCart.setVisibility(myView.INVISIBLE);
+            btnRefreshCart.setVisibility(myView.VISIBLE);
             txtCartEmpty.setVisibility(myView.VISIBLE);
         }else {
             txtItemText.setVisibility(myView.VISIBLE);
@@ -284,7 +283,7 @@ public class CartFragment extends Fragment {
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
                 TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
                 Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
-                Button btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
+                ImageButton btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
                 ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
                 TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 
@@ -302,7 +301,7 @@ public class CartFragment extends Fragment {
                     txtItemText.setVisibility(myView.INVISIBLE);
                     txtTotalAmount.setVisibility(myView.INVISIBLE);
                     btnCheckOut.setVisibility(myView.INVISIBLE);
-                    btnRefreshCart.setVisibility(myView.INVISIBLE);
+                    btnRefreshCart.setVisibility(myView.VISIBLE);
                     lvl.setVisibility(myView.INVISIBLE);
                     txtItemCount.setVisibility(myView.INVISIBLE);
                     txtCartEmpty.setVisibility(myView.VISIBLE);
@@ -328,7 +327,7 @@ public class CartFragment extends Fragment {
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
                 TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
                 Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
-                Button btnRefreshCart = (Button) myView.findViewById(R.id.btnRefreshCart);
+                ImageButton btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
                 ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
                 TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 

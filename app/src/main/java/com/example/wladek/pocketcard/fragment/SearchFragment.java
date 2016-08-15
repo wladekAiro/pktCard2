@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.SearchView;
@@ -231,7 +232,7 @@ public class SearchFragment extends Fragment {
                 view = layoutInflater.inflate(R.layout.listtwo_searchresults, null);
                 viewHolder = new ViewHolder();
                 viewHolder.productName = (TextView) view.findViewById(R.id.txtItemName);
-                viewHolder.btnAddToCart = (Button) view.findViewById(R.id.btnAddToCart);
+                viewHolder.btnAddToCart = (ImageButton) view.findViewById(R.id.btnAddToCart);
 
                 view.setTag(viewHolder);
             } else {
@@ -249,7 +250,7 @@ public class SearchFragment extends Fragment {
 
     static class ViewHolder {
         TextView productName;
-        Button btnAddToCart;
+        ImageButton btnAddToCart;
     }
 
     public class AddToCartClickListener implements View.OnClickListener {
