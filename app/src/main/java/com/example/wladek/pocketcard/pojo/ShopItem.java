@@ -72,4 +72,8 @@ public class ShopItem implements Serializable{
     public void setCartQuantity(int cartQuantity) {
         this.cartQuantity = cartQuantity;
     }
+
+    public void setId(Long aLong) {
+
+    }
 }
