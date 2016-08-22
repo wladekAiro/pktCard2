@@ -457,17 +457,22 @@ public class HomeActivity extends AppCompatActivity {
     }*/
 
     public void enableForegroundDispatchSystem() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        if(nfcAdapter != null) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
-        IntentFilter[] intentFilter = new IntentFilter[]{};
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+            IntentFilter[] intentFilter = new IntentFilter[]{};
+
+            nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+        }
     }
 
     public void disableForegroundDispatchSystem() {
-        nfcAdapter.disableForegroundDispatch(this);
+        if(nfcAdapter != null) {
+            nfcAdapter.disableForegroundDispatch(this);
+        }
     }
 }

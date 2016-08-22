@@ -2,8 +2,6 @@ package com.example.wladek.pocketcard;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -32,9 +30,10 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
         viewPager.setId(R.id.buy_pager);
         setContentView(viewPager);
 
-        final ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         //set tabs
         actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(this));
