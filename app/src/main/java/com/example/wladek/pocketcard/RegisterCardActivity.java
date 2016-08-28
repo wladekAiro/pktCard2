@@ -1,15 +1,11 @@
 package com.example.wladek.pocketcard;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.multidex.MultiDex;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,12 +25,6 @@ import butterknife.InjectView;
 
 public class RegisterCardActivity extends AppCompatActivity {
 
-    @InjectView(R.id.inputFirstName)
-    EditText inputFirstName;
-    @InjectView(R.id.inputSecondName)
-    EditText inputSecondName;
-    @InjectView(R.id.inputSirName)
-    EditText inputSirName;
     @InjectView(R.id.inputStudentNumber)
     EditText inputStudentNumber;
     @InjectView(R.id.btnSubmit)
@@ -42,9 +32,6 @@ public class RegisterCardActivity extends AppCompatActivity {
 
     ActionBar actionBar;
 
-    String firstName;
-    String secondName;
-    String sirName;
     String studentNumber;
 
     NfcAdapter nfcAdapter;
@@ -120,31 +107,7 @@ public class RegisterCardActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        firstName = inputFirstName.getText().toString();
-        secondName = inputSecondName.getText().toString();
-        sirName = inputSirName.getText().toString();
         studentNumber = inputStudentNumber.getText().toString();
-
-        if (firstName.isEmpty()) {
-            inputFirstName.setError("first name must be provide");
-            valid = false;
-        } else {
-            inputFirstName.setError(null);
-        }
-
-        if (secondName.isEmpty()) {
-            inputSecondName.setError("last name must be provided");
-            valid = false;
-        } else {
-            inputSecondName.setError(null);
-        }
-
-        if (sirName.isEmpty()) {
-            inputSirName.setError("sir name must be provided");
-            valid = false;
-        } else {
-            inputSirName.setError(null);
-        }
 
         if (studentNumber.isEmpty()) {
             inputStudentNumber.setError("student number must be provided");
