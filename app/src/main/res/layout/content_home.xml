@@ -24,23 +24,12 @@
         android:id="@+id/homeLayout">
 
         <TextView
-            android:id="@+id/student_form_title"
-            android:layout_width="237dp"
-            android:layout_height="wrap_content"
-            style="@style/AppTheme.AppBarOverlay"
-            android:hint=""
-            android:maxLines="1"
-            android:text="WELCOME TO POCKET CARD APP"
-            android:singleLine="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="POCKET CARD"
+            android:text="PockeCard Terminal"
             android:padding="15dp"
-            android:textColor="#fff"
-            android:background="@color/PrimaryColor"
-            android:textSize="30sp"
+            android:textColor="#5cb85c"
+            android:textSize="28sp"
             android:id="@+id/pktCardNote"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
@@ -48,73 +37,57 @@
         <ScrollView
             android:id="@+id/welcome_page"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="42dp">
 
-            <LinearLayout
-                android:id="@+id/home_lenear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </android.support.design.widget.TextInputLayout>
-
-                <!--<android.support.design.widget.TextInputLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                    <!--<AutoCompleteTextView-->
-                        <!--android:id="@+id/student_name"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:hint="@string/prompt_student_name"-->
-                        <!--android:inputType="text"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:singleLine="true" />-->
-
-                <!--</android.support.design.widget.TextInputLayout>-->
-
-                <!--<android.support.design.widget.TextInputLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-
-                    <!--<EditText-->
-                        <!--android:id="@+id/student_number"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:hint="@string/prompt_student_number"-->
-                        <!--android:imeActionId="@+id/login"-->
-                        <!--android:imeActionLabel="@string/action_student_number"-->
-                        <!--android:imeOptions="actionUnspecified"-->
-                        <!--android:inputType="text"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:singleLine="true" />-->
-
-                <!--</android.support.design.widget.TextInputLayout>-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btnCreateStudent"-->
-                    <!--style="?android:textAppearanceSmall"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:text="@string/action_create_student"-->
-                    <!--android:textStyle="bold" />-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btnCancelCreateStudent"-->
-                    <!--style="?android:textAppearanceSmall"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:text="@string/action_cancel_create"-->
-                    <!--android:textStyle="bold" />-->
-
-            </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HOME"
+            android:id="@+id/home_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ITEMS"
+            android:id="@+id/item_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SALES"
+            android:id="@+id/sales_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CART"
+            android:id="@+id/cart_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CHECKOUT"
+            android:id="@+id/checkout_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SETTINGS"
+            android:id="@+id/settings_button"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

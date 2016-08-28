@@ -18,6 +18,5 @@
         android:ems="10"
         android:id="@+id/itemId"
         android:layout_weight="1"
-        android:text=""
         android:visibility="invisible"/>
 </LinearLayout>
