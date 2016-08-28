@@ -56,17 +56,7 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
 
             @Override
             public void onPageSelected(int position) {
-
-                actionBar.setSelectedNavigationItem(position);
-
-
-//                Fragment fragment = ((FragmentStatePagerAdapter)viewPager.getAdapter()).getItem(position);
-//
-//                if (position == 2 && fragment != null){
-//                    fragment.onCreate(savedInstanceState);
-//                }
-//
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
