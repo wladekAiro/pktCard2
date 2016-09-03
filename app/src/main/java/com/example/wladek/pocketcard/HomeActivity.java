@@ -120,9 +120,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.nav_buy:
                         checkNfc(nfcAdapter, HomeActivity.this);
                         break;
-                    case R.id.nav_update:
-                        Toast.makeText(getApplicationContext(), " Update ", Toast.LENGTH_SHORT).show();
-                        break;
                     default:
                         break;
                 }
@@ -165,7 +162,7 @@ public class HomeActivity extends AppCompatActivity {
             builder.title("NFC Not Supported !");
             builder.content("This device does not support NFC. You will not be able to access some features of this app.");
             builder.positiveText("Continue");
-            builder.negativeText("Exit App");
+            builder.negativeText("Exit");
             builder.cancelable(false);
             dialog = builder.build();
             dialog.show();
@@ -196,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
 
         builder = new MaterialDialog.Builder(this);
         builder.title("Log in required !");
-        builder.content("You must log in as an administrator to register new card.");
+        builder.content("You must log in as an administrator to register a card.");
         builder.positiveText("Ok");
         builder.negativeText("Cancel");
         builder.cancelable(false);
@@ -269,7 +266,7 @@ public class HomeActivity extends AppCompatActivity {
             builder.title("NFC Not Supported !");
             builder.content("This device does not support NFC. You cannot access this feature.");
             builder.positiveText("Continue");
-            builder.negativeText("Exit App");
+            builder.negativeText("Exit");
             builder.cancelable(false);
             dialog = builder.build();
             dialog.show();

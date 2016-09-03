@@ -3,33 +3,46 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@mipmap/home100"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@mipmap/user100"
+            android:title="Account" />
+        <item
             android:id="@+id/nav_register"
-            android:icon="@drawable/side_nav_bar"
-            android:title="Register Card" />
+            android:icon="@mipmap/register100"
+            android:title="Register" />
         <item
             android:id="@+id/nav_buy"
-            android:icon="@drawable/side_nav_bar"
-            android:title="Buy Items" />
-        <!--<item-->
-            <!--android:id="@+id/nav_settings"-->
-            <!--android:icon="@drawable/side_nav_bar"-->
-            <!--android:title="Settings" />-->
+            android:icon="@mipmap/sales100"
+            android:title="Sales" />
+        <item
+            android:id="@+id/nav_view_items"
+            android:icon="@mipmap/items100"
+            android:title="Items" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@mipmap/reports100"
+            android:title="Reports" />
+
         <!--<item-->
             <!--android:id="@+id/demo_student"-->
             <!--android:icon="@drawable/side_nav_bar"-->
             <!--android:title="Students" />-->
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
             <item
-                android:id="@+id/nav_view_items"
-                android:icon="@drawable/side_nav_bar"
-                android:title="View Items" />
+                android:id="@+id/nav_sync"
+                android:icon="@mipmap/sync100"
+                android:title="Sync" />
             <item
-                android:id="@+id/nav_update"
-                android:icon="@drawable/side_nav_bar"
-                android:title="Update" />
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/about100"
+                android:title="About" />
         </menu>
     </item>
 

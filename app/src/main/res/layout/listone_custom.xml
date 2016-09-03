@@ -36,6 +36,8 @@
         android:id="@+id/imgBtnRmFromCart"
         android:layout_gravity="right"
         android:text="X"
-        android:textSize="25px"/>
+        android:textSize="26dp"
+        android:background="@color/colorAccent"
+        android:textColor="#fff" />
 
 </LinearLayout>

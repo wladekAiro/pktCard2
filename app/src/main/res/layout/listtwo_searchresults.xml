@@ -25,5 +25,6 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/txtItemName"
         android:layout_toEndOf="@+id/txtItemName"
-        android:src="@mipmap/add_shopping_cart_48" />
+        android:src="@mipmap/add_shopping_cart_48"
+        android:layout_alignBottom="@+id/txtItemName" />
 </RelativeLayout>

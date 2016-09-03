@@ -31,14 +31,15 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:height="@dimen/abc_text_size_display_1_material"
-                    android:textColor="#b61717"
-                    android:shadowColor="#191616"
+                    android:textColor="#5cb85c"
                     android:minHeight="@dimen/abc_action_bar_stacked_max_height"
                     android:minWidth="@dimen/abc_action_bar_stacked_tab_max_width"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <Button
                     style="?android:attr/buttonBarPositiveButtonStyle"

@@ -19,7 +19,8 @@
             android:textSize="14dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="10dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:typeface="normal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +57,9 @@
             android:layout_marginTop="4dp"
             android:layout_marginLeft="200dp"
             android:background="#A2A2A2"
-            android:padding="2dp"/>
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:typeface="normal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,8 +70,10 @@
             android:textSize="25dp"
             android:visibility="invisible"
             android:layout_alignTop="@+id/txtTotalAmount"
-            android:layout_toRightOf="@+id/txtItemText"
-            android:layout_toEndOf="@+id/txtItemText" />
+            android:typeface="normal"
+            android:layout_toRightOf="@+id/txtItemCount"
+            android:layout_alignRight="@+id/txtTotalAmount"
+            android:layout_alignEnd="@+id/txtTotalAmount" />
 
         <ImageButton
             style="?android:attr/buttonStyleSmall"
@@ -76,10 +81,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnRefreshCart"
             android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/btnCheckOut"
-            android:layout_alignStart="@+id/btnCheckOut"
-            android:layout_marginLeft="100dp"
-            android:src="@mipmap/refresh_48" />
+            android:src="@mipmap/refresh_48"
+            android:layout_toEndOf="@+id/btnCheckOut"
+            android:layout_toRightOf="@+id/btnCheckOut" />
     </RelativeLayout>
 
     <ListView

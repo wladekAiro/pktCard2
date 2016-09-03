@@ -21,7 +21,11 @@
         android:paddingLeft="@dimen/activity_horizontal_left_margin"
         android:paddingRight="@dimen/activity_horizontal_right_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:id="@+id/homeLayout">
+        android:id="@+id/homeLayout"
+        android:weightSum="1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,62 +36,118 @@
             android:textSize="28sp"
             android:id="@+id/pktCardNote"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
 
         <ScrollView
             android:id="@+id/welcome_page"
-            android:layout_width="match_parent"
-            android:layout_height="42dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:clickable="false">
 
         </ScrollView>
 
-        <Button
-            android:layout_width="match_parent"
+        <GridLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HOME"
-            android:id="@+id/home_button"
+            android:id="@+id/nav_home"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            android:layout_margin="5dp"
+            android:clickable="false">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ITEMS"
-            android:id="@+id/item_button"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="profile"
+                android:id="@+id/button2"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="true"
+                android:contextClickable="true"
+                android:elegantTextHeight="false"
+                android:enabled="false"
+                android:shadowColor="@color/PrimaryDarkColor" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SALES"
-            android:id="@+id/sales_button"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="register"
+                android:id="@+id/button3"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="false" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CART"
-            android:id="@+id/cart_button"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="items"
+                android:id="@+id/button"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="false" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="CHECKOUT"
-            android:id="@+id/checkout_button"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="reports"
+                android:id="@+id/button4"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="false" />
 
-        <Button
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="shop"
+                android:id="@+id/button5"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="false" />
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:text="update"
+                android:id="@+id/button6"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
+                android:textColor="@color/button_text_color"
+                android:clickable="false" />
+        </GridLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SETTINGS"
-            android:id="@+id/settings_button"
-            android:layout_gravity="center_horizontal"
-            android:textStyle="bold" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Get in touch: "
+                android:id="@+id/textView3"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
 
     </LinearLayout>
 
