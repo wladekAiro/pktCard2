@@ -1,5 +1,6 @@
 package com.example.wladek.pocketcard;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,10 +32,21 @@ public class LoginActivity extends AppCompatActivity{
         edPassword = (EditText) findViewById(R.id.edPassword);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button btnSkip = (Button) findViewById(R.id.btnSkip);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+
+
+        btnSkip.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this , HomeActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -54,22 +66,22 @@ public class LoginActivity extends AppCompatActivity{
         edPassword.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = edUserName.getText().toString();
+        String username = edUserName.getText().toString();
         String password = edPassword.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password)) {
-            edPassword.setError("provide password");
+        if (TextUtils.isEmpty(password)) {
+            edPassword.setError("Provide password");
             focusView = edPassword;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            edUserName.setError("provide username");
+        // Check for a valid username address.
+        if (TextUtils.isEmpty(username)) {
+            edUserName.setError("Provide username");
             focusView = edUserName;
             cancel = true;
         }
@@ -81,7 +93,7 @@ public class LoginActivity extends AppCompatActivity{
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
     }
