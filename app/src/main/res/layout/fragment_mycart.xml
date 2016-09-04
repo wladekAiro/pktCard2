@@ -36,7 +36,8 @@
             android:layout_toRightOf="@+id/txtItemCount"
             android:layout_marginTop="12dp"
             android:layout_alignParentBottom="true"
-            android:textStyle="italic" />
+            android:textStyle="italic"
+            android:layout_marginLeft="5dp" />
 
         <TextView
             android:layout_width="wrap_content"

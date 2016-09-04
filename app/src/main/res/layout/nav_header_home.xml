@@ -32,14 +32,13 @@
         android:maxHeight="100dp"
         android:maxWidth="100dp"
         android:clickable="false"
-        android:src="@mipmap/profile_pic"
         android:adjustViewBounds="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Benjamin Owuor"
+        android:text="School Name"
         android:id="@+id/user"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"

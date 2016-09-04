@@ -5,7 +5,7 @@
     android:weightSum="1">
 
     <TextView
-        android:layout_width="82dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:text="Item name"
         android:id="@+id/txtCartItemName"
@@ -15,7 +15,7 @@
         android:typeface="serif" />
 
     <Spinner
-        android:layout_width="120dp"
+        android:layout_width="60dp"
         android:layout_height="52dp"
         android:id="@+id/spnQty"
         android:layout_toLeftOf="@id/txtCartItemName"
@@ -33,13 +33,13 @@
 
     <Button
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:id="@+id/imgBtnRmFromCart"
         android:layout_gravity="right"
         android:text="X"
         android:textSize="20dp"
         android:background="@color/colorAccent"
         android:textColor="#fff"
-        android:layout_marginTop="5dp" />
+        android:typeface="serif" />
 
 </LinearLayout>
