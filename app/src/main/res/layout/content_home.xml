@@ -135,18 +135,55 @@
         </GridLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="233dp"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Get in touch: "
+                android:text="Contact us:"
                 android:id="@+id/textView3"
-                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="false"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true" />
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageButton"
+                android:layout_toRightOf="@+id/textView3"
+                android:layout_toEndOf="@+id/textView3"
+                android:src="@mipmap/facebook"
+                android:background="#ffffff"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="false"
+                android:layout_marginLeft="10dp" />
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageButton2"
+                android:layout_alignParentTop="false"
+                android:layout_toRightOf="@+id/imageButton"
+                android:layout_toEndOf="@+id/imageButton"
+                android:layout_alignParentBottom="true"
+                android:background="#ffffff"
+                android:src="@mipmap/twitter"
+                android:layout_marginLeft="10dp" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageButton3"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/imageButton2"
+                android:layout_toEndOf="@+id/imageButton2"
+                android:src="@mipmap/message"
+                android:background="#ffffff"
+                android:layout_marginLeft="10dp" />
+
         </RelativeLayout>
 
     </LinearLayout>

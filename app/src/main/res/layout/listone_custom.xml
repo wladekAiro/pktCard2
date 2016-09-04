@@ -10,8 +10,9 @@
         android:text="Item name"
         android:id="@+id/txtCartItemName"
         android:textSize="15dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="26dp"
+        android:layout_marginLeft="5dp"
+        android:typeface="serif" />
 
     <Spinner
         android:layout_width="120dp"
@@ -28,16 +29,17 @@
         android:id="@+id/txtCartItemValue"
         android:layout_toLeftOf="@id/spnQty"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="26dp" />
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/imgBtnRmFromCart"
         android:layout_gravity="right"
         android:text="X"
-        android:textSize="26dp"
+        android:textSize="20dp"
         android:background="@color/colorAccent"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        android:layout_marginTop="5dp" />
 
 </LinearLayout>

@@ -9,31 +9,34 @@
         android:layout_height="45dp">
 
         <TextView
-            android:id="@+id/txtItemText"
-            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(2)"
+            android:id="@+id/txtItemCount"
+            android:textColor="#474747"
+            android:textSize="20dp"
             android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/txtItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Items"
             android:textColor="#474747"
             android:textSize="14dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:typeface="normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(2)"
-            android:id="@+id/txtItemCount"
-            android:layout_toRightOf="@+id/txtItemText"
-            android:layout_alignParentTop="true"
+            android:typeface="serif"
+            android:layout_alignTop="@+id/btnCheckOut"
+            android:layout_toEndOf="@+id/txtItemCount"
+            android:layout_alignBottom="@+id/txtItemCount"
+            android:layout_toRightOf="@+id/txtItemCount"
+            android:layout_marginTop="12dp"
             android:layout_alignParentBottom="true"
-            android:textColor="#474747"
-            android:textSize="20dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="5dp"/>
+            android:textStyle="italic" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -42,10 +45,13 @@
             android:id="@+id/txtTotalAmount"
             android:layout_alignParentTop="true"
             android:textColor="#000000"
-            android:textSize="20dp"
-            android:layout_marginTop="12dp"
+            android:textSize="22dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="120dp"/>
+            android:layout_toRightOf="@+id/txtItemText"
+            android:layout_toEndOf="@+id/txtItemText"
+            android:layout_marginLeft="10dp"
+            android:typeface="serif" />
 
         <Button
             android:layout_width="wrap_content"
@@ -56,24 +62,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="200dp"
-            android:background="#A2A2A2"
             android:padding="2dp"
             android:textAlignment="center"
             android:typeface="normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CART IS EMPTY"
-            android:id="@+id/txtCartEmpty"
-            android:textColor="#47474747"
-            android:textSize="25dp"
-            android:visibility="invisible"
-            android:layout_alignTop="@+id/txtTotalAmount"
-            android:typeface="normal"
-            android:layout_toRightOf="@+id/txtItemCount"
-            android:layout_alignRight="@+id/txtTotalAmount"
-            android:layout_alignEnd="@+id/txtTotalAmount" />
 
         <ImageButton
             style="?android:attr/buttonStyleSmall"
@@ -81,14 +72,28 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnRefreshCart"
             android:layout_alignParentTop="true"
-            android:src="@mipmap/refresh_48"
-            android:layout_toEndOf="@+id/btnCheckOut"
-            android:layout_toRightOf="@+id/btnCheckOut" />
+            android:src="@mipmap/refresh"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CART IS EMPTY"
+        android:id="@+id/txtCartEmpty"
+        android:textColor="#222222"
+        android:textSize="25dp"
+        android:visibility="invisible"
+        android:typeface="sans"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/txtTotalAmount"
+        android:layout_alignEnd="@+id/txtTotalAmount"
+        android:layout_gravity="center_horizontal" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listCartView" />
+        android:id="@+id/listCartView"
+        android:fastScrollEnabled="false" />
 
 </LinearLayout>
