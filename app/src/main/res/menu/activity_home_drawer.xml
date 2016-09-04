@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
+        <!--<item
             android:id="@+id/nav_home"
             android:icon="@mipmap/home100"
-            android:title="Home" />
+            android:title="Home" />-->
         <item
             android:id="@+id/nav_account"
             android:icon="@mipmap/user100"
@@ -13,19 +13,15 @@
         <item
             android:id="@+id/nav_register"
             android:icon="@mipmap/register100"
-            android:title="Register" />
+            android:title="Register Card" />
         <item
             android:id="@+id/nav_buy"
             android:icon="@mipmap/sales100"
-            android:title="Sales" />
+            android:title="Buy" />
         <item
             android:id="@+id/nav_view_items"
             android:icon="@mipmap/items100"
             android:title="Items" />
-        <item
-            android:id="@+id/nav_reports"
-            android:icon="@mipmap/reports100"
-            android:title="Reports" />
 
         <!--<item-->
             <!--android:id="@+id/demo_student"-->
