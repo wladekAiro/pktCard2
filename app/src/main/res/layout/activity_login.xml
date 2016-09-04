@@ -37,7 +37,7 @@
                     android:id="@+id/edUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="User name"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -71,6 +71,12 @@
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"
                 android:background="@color/colorAccent" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skip"
+                android:id="@+id/btnSkip" />
 
         </LinearLayout>
     </ScrollView>

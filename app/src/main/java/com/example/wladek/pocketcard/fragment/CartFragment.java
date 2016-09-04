@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.wladek.pocketcard.BuyScreenActivity;
 import com.example.wladek.pocketcard.R;
-import com.example.wladek.pocketcard.activity.Checkout;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
@@ -345,7 +344,7 @@ public class CartFragment extends Fragment {
                     txtItemText.setVisibility(myView.INVISIBLE);
                     txtTotalAmount.setVisibility(myView.INVISIBLE);
                     btnCheckOut.setVisibility(myView.INVISIBLE);
-                    btnRefreshCart.setVisibility(myView.INVISIBLE);
+                    btnRefreshCart.setVisibility(myView.VISIBLE);
                     lvl.setVisibility(myView.INVISIBLE);
                     txtItemCount.setVisibility(myView.INVISIBLE);
                     txtCartEmpty.setVisibility(myView.VISIBLE);
