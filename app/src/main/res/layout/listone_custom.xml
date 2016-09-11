@@ -1,45 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    android:layout_height="40dp"
+    android:weightSum="1"
+    android:id="@+id/imgBtnFromCart"
+    android:background="#ffffff">
 
     <TextView
         android:layout_width="140dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Item name"
         android:id="@+id/txtCartItemName"
-        android:textSize="15dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginLeft="5dp"
-        android:typeface="serif" />
+        android:textSize="24dp"
+        android:layout_marginLeft="10dp"
+        android:typeface="serif"
+        android:layout_weight="0.63"
+        android:textStyle="normal"
+        android:layout_gravity="left" />
 
     <Spinner
-        android:layout_width="60dp"
-        android:layout_height="52dp"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
         android:id="@+id/spnQty"
         android:layout_toLeftOf="@id/txtCartItemName"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp" />
+        android:layout_marginLeft="100dp"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="82dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="TotalValue"
         android:id="@+id/txtCartItemValue"
         android:layout_toLeftOf="@id/spnQty"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="26dp" />
+        android:layout_marginLeft="100dp"
+        android:textStyle="bold"
+        android:layout_weight="0.07"
+        android:layout_marginTop="10dp"
+        android:textAlignment="textEnd" />
 
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+    <!--<Button
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/imgBtnRmFromCart"
-        android:layout_gravity="right"
         android:text="X"
         android:textSize="20dp"
         android:background="@color/colorAccent"
         android:textColor="#fff"
-        android:typeface="serif" />
+        android:typeface="serif"
+        android:layout_marginTop="20dp"
+        android:outlineProvider="background"
+        android:layout_gravity="right"
+        android:textStyle="bold" />-->
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgBtnRmFromCart"
+        android:src="@mipmap/cancel_2_48"
+        android:layout_gravity="right"
+        android:contextClickable="true"
+        android:background="#ffffff"
+        android:layout_marginLeft="20dp" />
 
 </LinearLayout>

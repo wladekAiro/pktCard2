@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp">
+    android:layout_marginRight="5dp"
+    android:background="#ffffff">
 
-
-    <TextView
-        android:layout_width="210dp"
-        android:layout_height="80px"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:text="Product name"
-        android:id="@+id/txtItemName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="28dp"/>
 
     <ImageButton
-        android:layout_width="80px"
-        android:layout_height="80px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/btnAddToCart"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/txtItemName"
-        android:layout_toEndOf="@+id/txtItemName"
+        android:layout_alignParentTop="false"
         android:src="@mipmap/add_shopping_cart_48"
-        android:layout_alignBottom="@+id/txtItemName" />
+        android:background="#fff"
+        android:layout_alignParentRight="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product name"
+        android:id="@+id/txtItemName"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30dp"
+        android:paddingLeft="10dp"
+        android:typeface="monospace"
+        android:minWidth="200dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="60dp" />
+
 </RelativeLayout>

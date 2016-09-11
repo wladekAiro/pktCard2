@@ -1,7 +1,6 @@
 package com.example.wladek.pocketcard.fragment;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -39,7 +37,7 @@ public class CartFragment extends Fragment {
     TextView txtItemText;
     TextView txtItemCount;
     TextView txtTotalAmount;
-    Button btnCheckOut;
+    ImageButton btnCheckOut;
     ImageButton btnRefreshCart;
     TextView txtCartEmpty;
     DatabaseHelper databaseHelper;
@@ -67,12 +65,12 @@ public class CartFragment extends Fragment {
 
         buyScreenActivity = (BuyScreenActivity) getActivity();
 
-        Typeface typeface = Typeface.createFromAsset(buyScreenActivity.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+//        Typeface typeface = Typeface.createFromAsset(buyScreenActivity.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
 
         txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
         txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
         txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
-        btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+        btnCheckOut = (ImageButton) myView.findViewById(R.id.btnCheckOut);
         btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
         lvl = (ListView) myView.findViewById(R.id.listCartView);
         txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
@@ -97,12 +95,12 @@ public class CartFragment extends Fragment {
         }
 
         txtItemCount.setText(""+totalCartItemCount);
-        txtTotalAmount.setText("Ksh."+totalCartValue);
+        txtTotalAmount.setText("Ksh." + totalCartValue);
 
-        txtItemText.setTypeface(typeface);
-        txtCartEmpty.setTypeface(typeface);
-        txtTotalAmount.setTypeface(typeface);
-        btnCheckOut.setTypeface(typeface);
+//        txtItemText.setTypeface(typeface);
+//        txtCartEmpty.setTypeface(typeface);
+//        txtTotalAmount.setTypeface(typeface);
+//        btnCheckOut.setTypeface(typeface);
 
         lvl.setAdapter(new CustomListOne(this.getActivity(), cartList));
         btnCheckOut.setOnClickListener(new MyCheckOutClickListener("btnCheckOut"));
@@ -117,7 +115,7 @@ public class CartFragment extends Fragment {
         ViewHolder viewHolder;
         private ArrayList<ShopItem> cartList = new ArrayList<ShopItem>();
         int cartCounter;
-        Typeface type;
+//        Typeface type;
         Context context;
 
         public CustomListOne(Context context, ArrayList<ShopItem> cartList) {
@@ -125,7 +123,7 @@ public class CartFragment extends Fragment {
             this.cartList = cartList;
             this.cartCounter = cartList.size();
             this.context = context;
-            type = Typeface.createFromAsset(context.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+//            type = Typeface.createFromAsset(context.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
 
         }
 
@@ -154,7 +152,7 @@ public class CartFragment extends Fragment {
 
                 viewHolder = new ViewHolder();
 
-                viewHolder.btnRmFromCart = (Button) convertView.findViewById(R.id.imgBtnRmFromCart);
+                viewHolder.btnRmFromCart = (ImageButton) convertView.findViewById(R.id.imgBtnRmFromCart);
                 viewHolder.spnQty = (Spinner) convertView.findViewById(R.id.spnQty);
                 viewHolder.txtCartItemName = (TextView) convertView.findViewById(R.id.txtCartItemName);
                 viewHolder.txtCartItemValue = (TextView) convertView.findViewById(R.id.txtCartItemValue);
@@ -167,8 +165,8 @@ public class CartFragment extends Fragment {
             viewHolder.txtCartItemName.setText(tmpItem.getName());
             viewHolder.txtCartItemValue.setText("Ksh." + tmpItem.getTotalCartValue());
 
-            viewHolder.txtCartItemName.setTypeface(type);
-            viewHolder.txtCartItemValue.setTypeface(type);
+//            viewHolder.txtCartItemName.setTypeface(type);
+//            viewHolder.txtCartItemValue.setTypeface(type);
 
             ArrayAdapter<String> aa = new ArrayAdapter<String>(context , R.layout.spinner_item , qtyValues);
             aa.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -222,7 +220,7 @@ public class CartFragment extends Fragment {
     }
 
     static class ViewHolder{
-        Button btnRmFromCart;
+        ImageButton btnRmFromCart;
         Spinner spnQty;
         TextView txtCartItemName;
         TextView txtCartItemValue;
@@ -281,7 +279,7 @@ public class CartFragment extends Fragment {
                 TextView txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
                 TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
-                Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+                ImageButton btnCheckOut = (ImageButton) myView.findViewById(R.id.btnCheckOut);
                 ImageButton btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
                 ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
                 TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
@@ -325,7 +323,7 @@ public class CartFragment extends Fragment {
                 TextView txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
                 TextView txtTotalAmount = (TextView) myView.findViewById(R.id.txtTotalAmount);
-                Button btnCheckOut = (Button) myView.findViewById(R.id.btnCheckOut);
+                ImageButton btnCheckOut = (ImageButton) myView.findViewById(R.id.btnCheckOut);
                 ImageButton btnRefreshCart = (ImageButton) myView.findViewById(R.id.btnRefreshCart);
                 ListView lvl = (ListView) myView.findViewById(R.id.listCartView);
                 TextView txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
