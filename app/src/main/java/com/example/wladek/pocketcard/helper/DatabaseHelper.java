@@ -6,12 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCHOOLDETAILS = "tbl_schooldetails";
     public static final String TABLE_CART = "tbl_cart";
     public static final String TABLE_SUDENTS = "ID";
-    public static final String COL2 = "NAME";
-    public static final String COL3 = "CORD";
-    public static final String COL4 = "UNIT_PRICE";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -56,17 +51,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean insertItems(String itemName , String itemCord , Double unitPrice){
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("ITEM_NAME", itemName);
-        contentValues.put("ITEM_CORD", itemCord);
-        contentValues.put("UNIT_PRICE", unitPrice);
 
-        Long result =  db.insert(TABLE_ITEMS, null, contentValues);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_ITEMS + " WHERE ITEM_CORD =?", new String[]{itemCord});
+        ContentValues contentValues = null;
+        if (cursor.getCount() == 0){
+            contentValues = new ContentValues();
+            contentValues.put("ITEM_NAME", itemName);
+            contentValues.put("ITEM_CORD", itemCord);
+            contentValues.put("UNIT_PRICE", unitPrice);
 
-        if(result == -1){
-            return false;
+            Long result =  db.insert(TABLE_ITEMS, null, contentValues);
+
+            if(result == -1){
+                return false;
+            }else {
+                return  true;
+            }
         }else {
-            return  true;
+            contentValues = new ContentValues();
+            contentValues.put("ITEM_NAME", itemName);
+            contentValues.put("ITEM_CORD", itemCord);
+            contentValues.put("UNIT_PRICE", unitPrice);
+            int result = db.update(TABLE_CART, contentValues, "ITEM_CORD='" + itemCord + "'", null);
+
+            if (result >= 1){
+                return  true;
+            }else {
+                return false;
+            }
         }
 
     }
@@ -183,25 +195,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_CART , "ITEM_CORD =?", new String[]{shopItem.getCode()} );
     }
 
-    public boolean insertSchoolDetails(String schoolName , String schoolCord , int loggedIn){
+    public boolean insertSchoolDetails(SchoolDetails schoolDetails , int loggedIn){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_SCHOOLDETAILS, null);
 
-        if (res.getCount() > 0){
+        if (res.getCount() > 1){
             return false;
         }
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("SCHOOL_NAME", schoolName);
-        contentValues.put("SCHOOL_CODE", schoolCord);
+        contentValues.put("SCHOOL_NAME", schoolDetails.getSchoolName());
+        contentValues.put("SCHOOL_CODE", schoolDetails.getSchoolCode());
         contentValues.put("LOGGED_IN", loggedIn);
 
         Long result =  db.insert(TABLE_SCHOOLDETAILS, null, contentValues);
 
         if(result == -1){
+            db.close();
             return false;
         }else {
+            db.close();
             return  true;
         }
 
@@ -216,11 +230,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_SCHOOLDETAILS, null);
 
         if (res.getCount() > 0){
-                schoolDetails = new SchoolDetails();
+
+            schoolDetails = new SchoolDetails();
+            int loggedIn = 0;
+
+            while (res.moveToNext()) {
+
                 schoolDetails.setSchoolName(res.getString(1));
-                schoolDetails.setSchoolcode(res.getString(2));
-                schoolDetails.setLoggedIn(res.getInt(3));
+                schoolDetails.setSchoolCode(res.getString(2));
+                loggedIn = res.getInt(3);
+
+            }
+
+            if (loggedIn == 1){
+                schoolDetails.setLoggedIn(true);
+            }else{
+                schoolDetails.setLoggedIn(false);
+            }
         }
+
+        db.close();
 
         return schoolDetails;
     }

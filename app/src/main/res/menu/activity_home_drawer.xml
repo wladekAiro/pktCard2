@@ -10,10 +10,10 @@
             android:id="@+id/nav_account"
             android:icon="@mipmap/user100"
             android:title="Account" />
-        <item
-            android:id="@+id/nav_register"
-            android:icon="@mipmap/register100"
-            android:title="Register Card" />
+        <!--<item-->
+            <!--android:id="@+id/nav_register"-->
+            <!--android:icon="@mipmap/register100"-->
+            <!--android:title="Register Card" />-->
         <item
             android:id="@+id/nav_buy"
             android:icon="@mipmap/sales100"
