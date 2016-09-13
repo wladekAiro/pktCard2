@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by wladek on 7/3/16.
  */
 public class ShopItem implements Serializable{
+    private Long id;
     private String name;
     private String code;
     private int cartQuantity;
@@ -73,7 +74,11 @@ public class ShopItem implements Serializable{
         this.cartQuantity = cartQuantity;
     }
 
-    public void setId(Long aLong) {
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
     }
 }

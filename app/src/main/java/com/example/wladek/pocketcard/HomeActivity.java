@@ -17,33 +17,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
+import com.example.wladek.pocketcard.net.ItemsRequest;
+import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     DatabaseHelper myDb;
-
-    Button btnCreateStudent;
-    Button btnCancelCreateStudent;
-    Button btnSkipLogin;
-    Button btnLogIn;
-
-    ProgressBar create_progress;
-
     LinearLayout homeLayOut;
-    LinearLayout logInLayOut;
-    LinearLayout createStudentLayOut;
-
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -54,12 +50,14 @@ public class HomeActivity extends AppCompatActivity {
 
     MaterialDialog dialog;
 
+    List<ShopItem> shopItems = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myDb = new DatabaseHelper(this);
         setContentView(R.layout.activity_home);
-        inserItems();
+        updateItems();
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -81,21 +79,7 @@ public class HomeActivity extends AppCompatActivity {
          * Logic buttons switch
          */
 
-        btnCreateStudent = (Button) findViewById(R.id.btnCreateStudent);
-        btnCancelCreateStudent = (Button) findViewById(R.id.btnCancelCreateStudent);
-        btnSkipLogin = (Button) findViewById(R.id.btnSkipLogin);
-        btnLogIn = (Button) findViewById(R.id.btnLogIn);
-
-        create_progress = (ProgressBar) findViewById(R.id.create_progress);
-
         homeLayOut = (LinearLayout) findViewById(R.id.homeLayout);
-        logInLayOut = (LinearLayout) findViewById(R.id.logInLayOut);
-        createStudentLayOut = (LinearLayout) findViewById(R.id.createStudentLayOut);
-
-
-        //Hide layouts
-        logInLayOut.setVisibility(View.INVISIBLE);
-        createStudentLayOut.setVisibility(View.INVISIBLE);
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -114,9 +98,6 @@ public class HomeActivity extends AppCompatActivity {
                 hideViews();
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_register:
-                        logInLayOut.setVisibility(View.VISIBLE);
-                        break;
                     case R.id.nav_buy:
                         checkNfc(nfcAdapter, HomeActivity.this);
                         break;
@@ -129,35 +110,12 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        btnSkipLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                askForLogIn();
-            }
-        });
-
-        btnCreateStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                create_progress.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, RegisterCardActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void checkIfEnabled() {
         if (nfcAdapter != null) {
-            Toast.makeText(this , "Nfc supported" , Toast.LENGTH_LONG).show();
-        }else {
+            Toast.makeText(this, "Nfc supported", Toast.LENGTH_LONG).show();
+        } else {
             builder = new MaterialDialog.Builder(this);
             builder.title("NFC Not Supported !");
             builder.content("This device does not support NFC. You will not be able to access some features of this app.");
@@ -185,38 +143,6 @@ public class HomeActivity extends AppCompatActivity {
 
             });
         }
-    }
-
-    private void askForLogIn() {
-//        hideViews();
-//        createStudentLayOut.setVisibility(View.VISIBLE);
-
-        builder = new MaterialDialog.Builder(this);
-        builder.title("Log in required !");
-        builder.content("You must log in as an administrator to register a card.");
-        builder.positiveText("Ok");
-        builder.negativeText("Cancel");
-        builder.cancelable(false);
-        dialog = builder.build();
-        dialog.show();
-
-        onNewIntent(getIntent());
-
-        builder.onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(MaterialDialog dialog, DialogAction which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.onNegative(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(MaterialDialog dialog, DialogAction which) {
-                dialog.dismiss();
-                hideViews();
-                homeLayOut.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void checkNfc(NfcAdapter nfcAdapter, final Context context) {
@@ -327,70 +253,21 @@ public class HomeActivity extends AppCompatActivity {
 
     public void hideViews() {
         homeLayOut.setVisibility(View.INVISIBLE);
-        logInLayOut.setVisibility(View.INVISIBLE);
-        createStudentLayOut.setVisibility(View.INVISIBLE);
-        create_progress.setVisibility(View.INVISIBLE);
     }
 
-    public void inserItems() {
+    public void inserItem(ShopItem s) {
 
         Log.e("TEST", "TESTING INSERT ITEMS ++++++++++++++++++++++++ ");
-
-        List<ShopItem> shopItems = new ArrayList<ShopItem>();
-
-        ShopItem shopItem = new ShopItem();
-        shopItem.setName("Avocado");
-        shopItem.setCode("AVO");
-        shopItem.setUnitPrice(new Double(10));
-        shopItems.add(shopItem);
-
-        shopItem = new ShopItem();
-        shopItem.setName("Bread");
-        shopItem.setCode("BRD");
-        shopItem.setUnitPrice(new Double(50));
-        shopItems.add(shopItem);
-
-        shopItem = new ShopItem();
-        shopItem.setName("Burn");
-        shopItem.setCode("BRN");
-        shopItem.setUnitPrice(new Double(10));
-        shopItems.add(shopItem);
-
-        shopItem = new ShopItem();
-        shopItem.setName("Pencil");
-        shopItem.setCode("PNC");
-        shopItem.setUnitPrice(new Double(15));
-        shopItems.add(shopItem);
-
-        shopItem = new ShopItem();
-        shopItem.setName("Mandazi");
-        shopItem.setCode("MNDZ");
-        shopItem.setUnitPrice(new Double(5));
-        shopItems.add(shopItem);
-
-        shopItem = new ShopItem();
-        shopItem.setName("Dognut");
-        shopItem.setCode("DGNT");
-        shopItem.setUnitPrice(new Double(10));
-        shopItems.add(shopItem);
-
-        boolean inserted = false;
 
         /**
          * Check if these items already exist in the db.
          */
-        if (getShopItems().size() == 0) {
-            if (!shopItems.isEmpty()) {
-                for (ShopItem s : shopItems) {
-                    inserted = myDb.insertItems(s.getName(), s.getCode(), s.getUnitPrice());
-                }
-            }
+        boolean inserted = myDb.insertItems(s.getName(), s.getCode(), s.getUnitPrice());
 
-            if (!inserted) {
-                Log.e("INSERT ", " ++++++++++ NOT INSERTED : " + inserted);
-            } else {
-                Log.e("INSERT ", " ++++++++++ INSERTED : " + inserted + " SHOP ITEMS " + shopItems.size());
-            }
+        if (!inserted) {
+            Log.e("INSERT ", " ++++++++++ NOT INSERTED : " + inserted);
+        } else {
+            Log.e("INSERT ", " ++++++++++ INSERTED : " + inserted + " SHOP ITEMS " + shopItems.size());
         }
     }
 
@@ -455,7 +332,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void enableForegroundDispatchSystem() {
 
-        if(nfcAdapter != null) {
+        if (nfcAdapter != null) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
@@ -468,8 +345,55 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void disableForegroundDispatchSystem() {
-        if(nfcAdapter != null) {
+        if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(this);
         }
+    }
+
+    public void updateItems() {
+
+        builder = new MaterialDialog.Builder(HomeActivity.this);
+        builder.title("Updating");
+        builder.content("Please wait as we set up your data");
+        builder.progress(true, 0);
+        builder.progressIndeterminateStyle(true);
+        builder.cancelable(false);
+
+        dialog = builder.build();
+        dialog.show();
+        syncFromServer();
+        dialog.dismiss();
+    }
+
+    private void syncFromServer() {
+
+        shopItems.clear();
+
+        SchoolDetails schoolDetails = myDb.getSchoolDetails();
+        Response.Listener<JSONArray> itemsArrayRequest = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject jo = response.getJSONObject(i);
+
+                        ShopItem shopItem = new ShopItem();
+                        shopItem.setName(jo.getString("name"));
+                        shopItem.setCode(jo.getString("itemCode"));
+                        shopItem.setUnitPrice(new Double(jo.getInt("unitPrice")));
+
+                        inserItem(shopItem);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        ItemsRequest itemsRequest = new ItemsRequest(schoolDetails.getSchoolCode(), itemsArrayRequest);
+        RequestQueue queue = Volley.newRequestQueue(HomeActivity.this);
+        queue.add(itemsRequest);
     }
 }

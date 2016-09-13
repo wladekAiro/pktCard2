@@ -7,8 +7,9 @@ import java.io.Serializable;
  */
 public class SchoolDetails implements Serializable{
     private String schoolName;
-    private String schoolcode;
-    private int loggedIn;
+    private String schoolCode;
+    private Boolean loggedIn;
+    private String logInResponse;
 
     public String getSchoolName() {
         return schoolName;
@@ -18,19 +19,27 @@ public class SchoolDetails implements Serializable{
         this.schoolName = schoolName;
     }
 
-    public String getSchoolcode() {
-        return schoolcode;
+    public String getSchoolCode() {
+        return schoolCode;
     }
 
-    public void setSchoolcode(String schoolcode) {
-        this.schoolcode = schoolcode;
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode;
     }
 
-    public int getLoggedIn() {
+    public Boolean getLoggedIn() {
         return loggedIn;
     }
 
-    public void setLoggedIn(int loggedIn) {
+    public void setLoggedIn(Boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    public String getLogInResponse() {
+        return logInResponse;
+    }
+
+    public void setLogInResponse(String logInResponse) {
+        this.logInResponse = logInResponse;
     }
 }
