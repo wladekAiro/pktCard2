@@ -101,6 +101,10 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.nav_buy:
                         checkNfc(nfcAdapter, HomeActivity.this);
                         break;
+                    case R.id.nav_view_items:
+                        Intent intent = new Intent(HomeActivity.this , ViewItemsActivity.class);
+                        startActivity(intent);
+                        break;
                     default:
                         break;
                 }
