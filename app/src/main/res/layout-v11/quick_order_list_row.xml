@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp">
+
+
+    <TextView
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="5dp"
+        android:text="Product name"
+        android:id="@+id/txtItemName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:text="Ksh"
+        android:id="@+id/txtItemCost"
+        android:layout_toRightOf="@+id/txtItemName"
+        android:layout_toEndOf="@+id/txtItemName"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/btnAddToCart"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/add_shopping_cart_48"
+        android:layout_alignBottom="@+id/txtItemName"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

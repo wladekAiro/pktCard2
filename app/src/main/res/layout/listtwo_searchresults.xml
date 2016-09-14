@@ -17,7 +17,13 @@
 
     <TextView
         android:layout_width="wrap_content"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
+=======
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
         android:text="Product name"
         android:id="@+id/txtItemName"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -28,6 +34,19 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+<<<<<<< HEAD
         android:layout_marginLeft="60dp" />
 
+=======
+        android:textSize="20dp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:id="@+id/btnAddToCart"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/add_shopping_cart_48"
+        android:layout_alignBottom="@+id/txtItemName"
+        android:layout_alignParentRight="true"/>
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
 </RelativeLayout>

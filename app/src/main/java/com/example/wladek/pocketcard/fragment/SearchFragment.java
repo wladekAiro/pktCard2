@@ -67,7 +67,7 @@ public class SearchFragment extends Fragment {
         final BuyScreenActivity activity = (BuyScreenActivity) getActivity();
 
         //Define typeface for formating text fields and list view
-        typeface = Typeface.createFromAsset(activity.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+        typeface = Typeface.createFromAsset(activity.getAssets(), "fonts/regular_serif.ttf");
 
         myFragmentView = inflater.inflate(R.layout.fragment_search, container, false);
         search = (SearchView) myFragmentView.findViewById(R.id.searchViewItem);
@@ -202,7 +202,7 @@ public class SearchFragment extends Fragment {
             this.shopItems = shopItems;
             this.count = shopItems.size();
             this.context = context;
-            typeface = Typeface.createFromAsset(context.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+            typeface = Typeface.createFromAsset(context.getAssets(), "fonts/regular_serif.ttf");
         }
 
         @Override
@@ -253,7 +253,7 @@ public class SearchFragment extends Fragment {
         ImageButton btnAddToCart;
     }
 
-    public class AddToCartClickListener implements View.OnClickListener {
+    class AddToCartClickListener implements View.OnClickListener {
         String btn_name;
         ShopItem shopItem;
         Context context;

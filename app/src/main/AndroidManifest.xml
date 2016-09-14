@@ -15,6 +15,10 @@
         android:name="android.hardware.nfc"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -23,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -37,12 +40,12 @@
         <activity
             android:name=".HomeActivity"
             android:label="PockeCard"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".BuyScreenActivity"
-            android:label="buyItemActivity"
-            android:parentActivityName=".HomeActivity" />
+            android:label="Buy Items"/>
+        <activity android:name=".ViewItemsActivity"
+            android:parentActivityName=".HomeActivity"
+            android:label="Available Items"></activity>
     </application>
-
 </manifest>

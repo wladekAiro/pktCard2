@@ -11,6 +11,7 @@
         android:layout_height="40dp"
         android:text="Item name"
         android:id="@+id/txtCartItemName"
+<<<<<<< HEAD
         android:textSize="18dp"
         android:layout_marginLeft="10dp"
         android:typeface="serif"
@@ -26,6 +27,21 @@
         android:layout_marginLeft="100dp"
         android:spinnerMode="dropdown"
         android:textAlignment="center" />
+=======
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:typeface="serif" />
+
+    <Spinner
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:id="@+id/spnQty"
+        android:layout_toLeftOf="@id/txtCartItemName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.19" />
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
 
     <TextView
         android:layout_width="82dp"
@@ -33,6 +49,7 @@
         android:text="TotalValue"
         android:id="@+id/txtCartItemValue"
         android:layout_toLeftOf="@id/spnQty"
+<<<<<<< HEAD
         android:layout_marginLeft="100dp"
         android:textStyle="bold"
         android:layout_weight="0.07"
@@ -42,9 +59,17 @@
     <!--<Button
         android:layout_width="30dp"
         android:layout_height="30dp"
+=======
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
         android:id="@+id/imgBtnRmFromCart"
         android:text="X"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:background="@color/colorAccent"
         android:textColor="#fff"
         android:typeface="serif"

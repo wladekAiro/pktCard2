@@ -48,6 +48,7 @@ public class CartFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getActivity());
+        getCartData();
     }
 
     @Nullable
@@ -55,7 +56,6 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         myView = inflater.inflate(R.layout.fragment_mycart, container, false);
-        getCartData();
         totalCartItemCount = cartList.size();
         totalCartValue = new Double(0);
 
@@ -65,7 +65,11 @@ public class CartFragment extends Fragment {
 
         buyScreenActivity = (BuyScreenActivity) getActivity();
 
+<<<<<<< HEAD
 //        Typeface typeface = Typeface.createFromAsset(buyScreenActivity.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+=======
+        Typeface typeface = Typeface.createFromAsset(buyScreenActivity.getAssets(), "fonts/regular_serif.ttf");
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
 
         txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
         txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
@@ -123,7 +127,11 @@ public class CartFragment extends Fragment {
             this.cartList = cartList;
             this.cartCounter = cartList.size();
             this.context = context;
+<<<<<<< HEAD
 //            type = Typeface.createFromAsset(context.getAssets(), "fonts/LittleLordFontleroyNF.ttf");
+=======
+            type = Typeface.createFromAsset(context.getAssets(), "fonts/regular_serif.ttf");
+>>>>>>> 7c5b5765d7d39c917fbfe89961ce151b73396c97
 
         }
 
