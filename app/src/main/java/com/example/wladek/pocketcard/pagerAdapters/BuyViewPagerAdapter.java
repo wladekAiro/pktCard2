@@ -36,14 +36,14 @@ public class BuyViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position){
-            case 0:
+            case 2:
                 SearchFragment sf = new SearchFragment();
                 sf.setItemResults(getShopItems());
                 return sf;
             case 1:
                 CartFragment cf = new CartFragment();
                 return cf;
-            case 2:
+            case 0:
                 QuickOrderFragment qf = new QuickOrderFragment();
                 return qf;
 

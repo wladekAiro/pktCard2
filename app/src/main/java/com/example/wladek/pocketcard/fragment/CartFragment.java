@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,8 @@ public class CartFragment extends Fragment {
     DatabaseHelper databaseHelper;
 
     BuyScreenActivity buyScreenActivity;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -240,6 +243,15 @@ public class CartFragment extends Fragment {
         public void onClick(View v) {
 
             if(buttonName.equals("btnCheckOut")){
+                builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("ENTER PIN");
+                builder.setView(R.layout.student_pin_layout);
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", null);
+                builder.setNegativeButton("CANCEL" , null);
+
+                dialog = builder.create();
+                dialog.show();
 //                Intent intent = new Intent(getActivity() ,Checkout.class);
 //                startActivity(intent);
                 Toast.makeText(getContext() , "Checked out " , Toast.LENGTH_SHORT).show();
