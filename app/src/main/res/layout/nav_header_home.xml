@@ -19,11 +19,11 @@
         android:src="@mipmap/icon_1" />-->
 
     <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
-        <!--android:text="Pocket Card"-->
-        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
+    <!--android:text="Pocket Card"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
 
     <ImageView
         android:layout_width="wrap_content"
@@ -32,13 +32,15 @@
         android:maxHeight="100dp"
         android:maxWidth="100dp"
         android:clickable="false"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:minWidth="60dp"
+        android:minHeight="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="School Name"
+        android:text="Test School"
         android:id="@+id/user"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"

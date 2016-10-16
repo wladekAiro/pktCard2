@@ -387,7 +387,7 @@ public class CartFragment extends Fragment {
     }
 
     private void updateCart(int quantity , ShopItem item){
-        Log.e("CART UPDATE", "+++ UPDATING CART DATA +++");
+        Log.e("CART UPDATED", "+++ UPDATING CART DATA +++");
 
         int result = databaseHelper.updateCart(quantity , item);
 
