@@ -1,10 +1,13 @@
 package com.example.wladek.pocketcard.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -25,6 +29,8 @@ import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 
 import java.util.ArrayList;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by wladek on 7/13/16.
@@ -45,6 +51,10 @@ public class CartFragment extends Fragment {
     DatabaseHelper databaseHelper;
 
     BuyScreenActivity buyScreenActivity;
+    AlertDialog.Builder builder;
+    AlertDialog dialog;
+
+    SweetAlertDialog sweetAlertDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -240,12 +250,46 @@ public class CartFragment extends Fragment {
         public void onClick(View v) {
 
             if(buttonName.equals("btnCheckOut")){
-//                Intent intent = new Intent(getActivity() ,Checkout.class);
-//                startActivity(intent);
-                Toast.makeText(getContext() , "Checked out " , Toast.LENGTH_SHORT).show();
 
+                final LayoutInflater inflater = getActivity().getLayoutInflater();
+                final View view = inflater.inflate(R.layout.student_pin_layout, null);
+
+                final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
+
+                builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("ENTER PIN");
+                builder.setView(view);
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String pin = pinText.getText().toString();
+
+                        if (pin.length() == 4){
+                            checkout(pin);
+                        }else {
+                            Toast.makeText(getContext(), "Pin too short, please try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("CANCEL", null);
+
+                dialog = builder.create();
+                dialog.show();
             }
         }
+    }
+
+    private void checkout(String pin) {
+
+        sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        sweetAlertDialog.setTitleText("Please wait ...");
+        sweetAlertDialog.setCancelable(true);
+        sweetAlertDialog.show();
+
     }
 
     public class MyPersonalClickListener implements View.OnClickListener{

@@ -36,9 +36,9 @@ public class BuyScreenActivity extends ActionBarActivity implements ActionBar.Ta
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //set tabs
-        actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(this));
-        actionBar.addTab(actionBar.newTab().setText("Cart").setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText("Quick order").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Cart").setTabListener(this));
+        actionBar.addTab(actionBar.newTab().setText("Search").setTabListener(this));
 
         adapter = new BuyViewPagerAdapter
                 (getSupportFragmentManager(), actionBar.getTabCount());
