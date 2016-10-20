@@ -23,10 +23,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.BuyScreenActivity;
 import com.example.wladek.pocketcard.R;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.pojo.ShopItem;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -55,6 +61,8 @@ public class CartFragment extends Fragment {
     AlertDialog dialog;
 
     SweetAlertDialog sweetAlertDialog;
+
+    boolean checkedOut;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -283,12 +291,44 @@ public class CartFragment extends Fragment {
     }
 
     private void checkout(String pin) {
+        getCartData();
+
+
 
         sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         sweetAlertDialog.setTitleText("Please wait ...");
         sweetAlertDialog.setCancelable(true);
         sweetAlertDialog.show();
+
+        Response.Listener<JSONObject> loginResponseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    checkedOut = response.getBoolean("loggedIn");
+                    String serverResp = response.getString("logInResponse");
+
+                    if (checkedOut){
+
+                        String schoolName = response.getString("schoolName");
+                        String schoolCode = response.getString("schoolCode");
+
+                        sweetAlertDialog.dismiss();
+
+                    }else {
+                        sweetAlertDialog.dismiss();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+//        CheckoutRequest checkoutRequest = new LoginRequest(new JSONObject(loginParams) , loginResponseListener);
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+//        queue.add(checkoutRequest);
 
     }
 
