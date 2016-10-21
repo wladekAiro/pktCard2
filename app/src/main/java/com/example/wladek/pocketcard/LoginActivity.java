@@ -1,10 +1,7 @@
 package com.example.wladek.pocketcard;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.net.LoginRequest;
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
+import com.example.wladek.pocketcard.util.ConnectivityReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,12 +43,16 @@ public class LoginActivity extends AppCompatActivity{
 
     boolean loggedIn;
 
+    private ConnectivityReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         databaseHelper = new DatabaseHelper(LoginActivity.this);
+
+        receiver = new ConnectivityReceiver(getApplicationContext() , LoginActivity.this);
 
         if(checkLoggedIn()){
             launchApp();
@@ -66,7 +68,7 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-                if(hasNetworkConnection()){
+                if(receiver.hasNetworkConnection()){
                     attemptLogin();
                 }else{
                     Snackbar.make(view, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
@@ -178,19 +180,6 @@ public class LoginActivity extends AppCompatActivity{
                         sweetAlertDialog.dismiss();
                     }
 
-
-//                    if (resp) {
-//                        showProgress(false);
-//
-//                        Toast.makeText(getApplicationContext(), "Server response : " + resp, Toast.LENGTH_LONG).show();
-//
-//                    } else {
-//                        MaterialDialog.Builder builder = new MaterialDialog.Builder(getApplicationContext());
-//                        builder.title("Registration Failed")
-//                                .negativeText("Retry");
-//                        MaterialDialog dialog = builder.build();
-//                        dialog.show();
-//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -214,36 +203,9 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
     public void launchApp(){
         Intent intent = new Intent(LoginActivity.this , HomeActivity.class);
         startActivity(intent);
-    }
-
-    private boolean hasNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
     }
 }
 

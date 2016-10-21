@@ -6,10 +6,10 @@
             android:id="@+id/nav_home"
             android:icon="@mipmap/home100"
             android:title="Home" />-->
-        <item
-            android:id="@+id/nav_account"
-            android:icon="@mipmap/user100"
-            android:title="Account" />
+        <!--<item-->
+            <!--android:id="@+id/nav_account"-->
+            <!--android:icon="@mipmap/user100"-->
+            <!--android:title="Account" />-->
         <!--<item-->
             <!--android:id="@+id/nav_register"-->
             <!--android:icon="@mipmap/register100"-->
@@ -29,17 +29,17 @@
             <!--android:title="Students" />-->
     </group>
 
-    <item android:title="">
-        <menu>
-            <item
-                android:id="@+id/nav_sync"
-                android:icon="@mipmap/sync100"
-                android:title="Sync" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@mipmap/about100"
-                android:title="About" />
-        </menu>
-    </item>
+    <!--<item android:title="">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_sync"-->
+                <!--android:icon="@mipmap/sync100"-->
+                <!--android:title="Sync" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_about"-->
+                <!--android:icon="@mipmap/about100"-->
+                <!--android:title="About" />-->
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -29,12 +30,18 @@ import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.BuyScreenActivity;
 import com.example.wladek.pocketcard.R;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
+import com.example.wladek.pocketcard.net.CheckoutRequest;
 import com.example.wladek.pocketcard.pojo.ShopItem;
+import com.example.wladek.pocketcard.pojo.StudentData;
+import com.example.wladek.pocketcard.util.ConnectivityReceiver;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -64,10 +71,13 @@ public class CartFragment extends Fragment {
 
     boolean checkedOut;
 
+    ConnectivityReceiver receiver;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getActivity());
+        receiver = new ConnectivityReceiver(getContext() , getActivity());
         getCartData();
     }
 
@@ -262,36 +272,53 @@ public class CartFragment extends Fragment {
                 final LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View view = inflater.inflate(R.layout.student_pin_layout, null);
 
-                final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
+                if (!receiver.hasNetworkConnection()){
+                    Snackbar.make(view, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }else {
 
-                builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("ENTER PIN");
-                builder.setView(view);
-                builder.setCancelable(false);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
 
-                        String pin = pinText.getText().toString();
+                    builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("ENTER PIN");
+                    builder.setView(view);
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        if (pin.length() == 4){
-                            checkout(pin);
-                        }else {
-                            Toast.makeText(getContext(), "Pin too short, please try again.", Toast.LENGTH_SHORT).show();
+                            String pin = pinText.getText().toString();
+
+                            if (pin.length() == 4) {
+                                checkout(pin);
+                            } else {
+                                Toast.makeText(getContext(), "Pin too short, please try again.", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
 
-                builder.setNegativeButton("CANCEL", null);
+                    builder.setNegativeButton("CANCEL", null);
 
-                dialog = builder.create();
-                dialog.show();
+                    dialog = builder.create();
+                    dialog.show();
+                }
             }
         }
     }
 
     private void checkout(String pin) {
+
+        Map<String, String> checkoutParams = new HashMap<String, String>();
+
         getCartData();
+
+        StudentData studentData = getStudentData();
+
+        JSONArray itemsArray = new JSONArray(cartList);
+
+        checkoutParams.put("pin" , pin);
+        checkoutParams.put("cardNumber", studentData.getCardNumber());
+        checkoutParams.put("items", itemsArray.toString());
 
 
 
@@ -306,13 +333,11 @@ public class CartFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
 
-                    checkedOut = response.getBoolean("loggedIn");
-                    String serverResp = response.getString("logInResponse");
+                    checkedOut = response.getBoolean("checkOut");
+
+                    String serverResp = response.getString("checkOutResponse");
 
                     if (checkedOut){
-
-                        String schoolName = response.getString("schoolName");
-                        String schoolCode = response.getString("schoolCode");
 
                         sweetAlertDialog.dismiss();
 
@@ -326,9 +351,9 @@ public class CartFragment extends Fragment {
             }
         };
 
-//        CheckoutRequest checkoutRequest = new LoginRequest(new JSONObject(loginParams) , loginResponseListener);
+        CheckoutRequest checkoutRequest = new CheckoutRequest(new JSONObject(checkoutParams) , loginResponseListener);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-//        queue.add(checkoutRequest);
+        queue.add(checkoutRequest);
 
     }
 
@@ -456,6 +481,10 @@ public class CartFragment extends Fragment {
         cartList.addAll(databaseHelper.getCartItems());
 
         Log.e("LIST SIZE" , "+++ "+cartList.size());
+    }
+
+    private StudentData getStudentData() {
+        return databaseHelper.getStudentData();
     }
 
     private void updateCart(int quantity , ShopItem item){

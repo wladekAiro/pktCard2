@@ -1,50 +1,41 @@
-//package com.example.wladek.pocketcard.util;
-//
-///**
-// * Created by wladek on 10/20/16.
-// */
-//
-//import android.content.BroadcastReceiver;
-//import android.content.Context;
-//import android.content.Intent;
-//import android.net.ConnectivityManager;
-//import android.net.NetworkInfo;
-//
-//import com.example.wladek.pocketcard.PockeApplication;
-//
-//public class ConnectivityReceiver
-//        extends BroadcastReceiver {
-//
-//    public static ConnectivityReceiverListener connectivityReceiverListener;
-//
-//    public ConnectivityReceiver() {
-//        super();
-//    }
-//
-//    @Override
-//    public void onReceive(Context context, Intent arg1) {
-//        ConnectivityManager cm = (ConnectivityManager) context
-//                .getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//        boolean isConnected = activeNetwork != null
-//                && activeNetwork.isConnectedOrConnecting();
-//
-//        if (connectivityReceiverListener != null) {
-//            connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
-//        }
-//    }
-//
-//    public static boolean isConnected() {
-//        ConnectivityManager
-//                cm = (ConnectivityManager) PockeApplication.getInstance().getApplicationContext()
-//                .getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//        return activeNetwork != null
-//                && activeNetwork.isConnectedOrConnecting();
-//    }
-//
-//
-//    public interface ConnectivityReceiverListener {
-//        void onNetworkConnectionChanged(boolean isConnected);
-//    }
-//}
+package com.example.wladek.pocketcard.util;
+
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+/**
+ * Created by wladek on 10/20/16.
+ */
+
+public class ConnectivityReceiver{
+
+    private Context context;
+    private Activity activity;
+    public ConnectivityReceiver(Context context , Activity activity) {
+        this.context = context;
+        this.activity = activity;
+    }
+
+    public interface ConnectivityReceiverListener {
+        void onNetworkConnectionChanged(boolean isConnected);
+    }
+
+    public boolean hasNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+}

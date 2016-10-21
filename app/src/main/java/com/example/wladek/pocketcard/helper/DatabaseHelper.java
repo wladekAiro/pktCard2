@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
+import com.example.wladek.pocketcard.pojo.StudentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_ITEMS = "tbl_items";
     public static final String TABLE_SCHOOLDETAILS = "tbl_schooldetails";
     public static final String TABLE_CART = "tbl_cart";
-    public static final String TABLE_SUDENT = "tbl_student";
+    public static final String TABLE_STUDENT = "tbl_student";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -36,14 +37,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CART + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, ITEM_NAME TEXT, ITEM_CORD TEXT," +
                 " UNIT_PRICE DOUBLE , ITEM_QTY INTEGER ,TOTAL_VALUE DOUBLE)");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SUDENT + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, STUDENT_NAME TEXT, STUDENT_NUMBER TEXT, CARD_NUMBER TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STUDENT + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, STUDENT_NAME TEXT, STUDENT_NUMBER TEXT, CARD_NUMBER TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_SCHOOLDETAILS + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, SCHOOL_NAME TEXT, SCHOOL_CODE TEXT , LOGGED_IN INTEGER)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_ITEMS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUDENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STUDENT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCHOOLDETAILS);
         onCreate(db);
@@ -254,4 +255,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return schoolDetails;
     }
 
+    public StudentData getStudentData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        StudentData studentData = null;
+
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_STUDENT, null);
+
+        if (res.getCount() > 0){
+
+            studentData = new StudentData();
+
+            while (res.moveToNext()) {
+
+                studentData.setStudentName(res.getString(1));
+                studentData.setStudentNumber(res.getString(2));
+                studentData.setCardNumber(res.getString(3));
+
+            }
+
+            db.close();
+
+            return studentData;
+        }
+
+        db.close();
+
+        return null;
+    }
 }

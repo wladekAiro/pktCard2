@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,6 +30,7 @@ import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.net.ItemsRequest;
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
+import com.example.wladek.pocketcard.util.ConnectivityReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
 
     List<ShopItem> shopItems = new ArrayList<>();
 
+    ConnectivityReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,8 @@ public class HomeActivity extends AppCompatActivity {
         updateItems();
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        receiver = new ConnectivityReceiver(getApplicationContext() , HomeActivity.this);
 
         checkIfEnabled();
 
@@ -99,7 +105,14 @@ public class HomeActivity extends AppCompatActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.nav_buy:
-                        checkNfc(nfcAdapter, HomeActivity.this);
+
+                        if (receiver.hasNetworkConnection()){
+                            checkNfc(nfcAdapter, HomeActivity.this);
+                        }else {
+                            Snackbar.make(navigationView, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+
                         break;
                     case R.id.nav_view_items:
                         Intent intent = new Intent(HomeActivity.this , ViewItemsActivity.class);
@@ -228,7 +241,7 @@ public class HomeActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 
@@ -256,7 +269,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void hideViews() {
-        homeLayOut.setVisibility(View.INVISIBLE);
+
+        switch (homeLayOut.getVisibility()){
+            case View.INVISIBLE:
+                homeLayOut.setVisibility(View.VISIBLE);
+                break;
+            case View.VISIBLE:
+                homeLayOut.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                homeLayOut.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     public void inserItem(ShopItem s) {
@@ -319,6 +343,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         enableForegroundDispatchSystem();
+        hideViews();
     }
 
     @Override
