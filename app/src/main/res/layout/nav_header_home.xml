@@ -26,8 +26,8 @@
         <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
         android:id="@+id/profile_pic"
         android:maxHeight="100dp"
         android:maxWidth="100dp"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="School Name"
+        android:text="MENU"
         android:id="@+id/user"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"

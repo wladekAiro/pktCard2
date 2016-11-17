@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -56,6 +57,9 @@ public class HomeActivity extends AppCompatActivity {
 
     ConnectivityReceiver receiver;
 
+    Button btnCheckBalance;
+    Button btnBuyItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        receiver = new ConnectivityReceiver(getApplicationContext() , HomeActivity.this);
+        receiver = new ConnectivityReceiver(getApplicationContext(), HomeActivity.this);
 
         checkIfEnabled();
 
@@ -87,6 +91,9 @@ public class HomeActivity extends AppCompatActivity {
 
         homeLayOut = (LinearLayout) findViewById(R.id.homeLayout);
 
+        btnBuyItem = (Button) findViewById(R.id.btnBuyItem);
+        btnCheckBalance = (Button) findViewById(R.id.btnCheckBalance);
+
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -105,17 +112,10 @@ public class HomeActivity extends AppCompatActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.nav_buy:
-
-                        if (receiver.hasNetworkConnection()){
-                            checkNfc(nfcAdapter, HomeActivity.this);
-                        }else {
-                            Snackbar.make(navigationView, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                        }
-
+                        buyItems();
                         break;
                     case R.id.nav_view_items:
-                        Intent intent = new Intent(HomeActivity.this , ViewItemsActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, ViewItemsActivity.class);
                         startActivity(intent);
                         break;
                     default:
@@ -127,6 +127,33 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        btnBuyItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buyItems();
+            }
+        });
+
+        btnCheckBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBalance();
+            }
+        });
+    }
+
+    private void checkBalance() {
+
+    }
+
+    private void buyItems() {
+        if (receiver.hasNetworkConnection()) {
+            checkNfc(nfcAdapter, HomeActivity.this);
+        } else {
+            Snackbar.make(navigationView, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
     private void checkIfEnabled() {
@@ -270,20 +297,20 @@ public class HomeActivity extends AppCompatActivity {
 
     public void hideViews() {
 
-        switch (homeLayOut.getVisibility()){
-            case View.INVISIBLE:
-                homeLayOut.setVisibility(View.VISIBLE);
-                break;
-            case View.VISIBLE:
-                homeLayOut.setVisibility(View.INVISIBLE);
-                break;
-            default:
-                homeLayOut.setVisibility(View.VISIBLE);
-                break;
-        }
+//        switch (homeLayOut.getVisibility()){
+//            case View.INVISIBLE:
+//                homeLayOut.setVisibility(View.VISIBLE);
+//                break;
+//            case View.VISIBLE:
+//                homeLayOut.setVisibility(View.INVISIBLE);
+//                break;
+//            default:
+//                homeLayOut.setVisibility(View.VISIBLE);
+//                break;
+//        }
     }
 
-    public void inserItem(ShopItem s) {
+    public void insertItem(ShopItem s) {
 
         Log.e("TEST", "TESTING INSERT ITEMS ++++++++++++++++++++++++ ");
 
@@ -412,7 +439,7 @@ public class HomeActivity extends AppCompatActivity {
                         shopItem.setCode(jo.getString("itemCode"));
                         shopItem.setUnitPrice(new Double(jo.getInt("unitPrice")));
 
-                        inserItem(shopItem);
+                        insertItem(shopItem);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

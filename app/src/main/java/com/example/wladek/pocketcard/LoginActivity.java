@@ -172,8 +172,9 @@ public class LoginActivity extends AppCompatActivity{
                         schoolDetails.setSchoolCode(schoolCode);
                         schoolDetails.setLoggedIn(loggedIn);
 
-                        saveSchoolDetails(schoolDetails);
                         sweetAlertDialog.dismiss();
+
+                        saveSchoolDetails(schoolDetails);
 
                     }else {
                         Toast.makeText(LoginActivity.this, "Login : " + serverResp, Toast.LENGTH_LONG).show();
@@ -198,9 +199,8 @@ public class LoginActivity extends AppCompatActivity{
         if (schoolDetails.getLoggedIn()){
             loggedIn = 1;
         }
-
         databaseHelper.insertSchoolDetails(schoolDetails , loggedIn);
-
+        launchApp();
     }
 
     public void launchApp(){
