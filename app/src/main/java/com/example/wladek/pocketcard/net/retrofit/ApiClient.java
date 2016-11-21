@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiClient {
 
-    public static final String BASE_URL = StringUtils.SERVER_URL;
+    public static final String BASE_URL = StringUtils.SERVER_URL+"/";
     private static Retrofit retrofit = null;
 
 

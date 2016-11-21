@@ -84,11 +84,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getAllShopItems(){
+    public ArrayList<ShopItem> getAllShopItems(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_ITEMS, null);
 
-        return res;
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_ITEMS, null);
+        ArrayList<ShopItem> shopItems = new ArrayList<ShopItem>();
+
+        if (res.getCount() > 0) {
+            while (res.moveToNext()) {
+
+                ShopItem shopItem = new ShopItem();
+                shopItem.setName(res.getString(1));
+                shopItem.setCode(res.getString(2));
+                shopItem.setUnitPrice(res.getDouble(3));
+
+                shopItems.add(shopItem);
+            }
+        }
+
+        res.close();
+
+        return shopItems;
     }
 
 
@@ -151,6 +167,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
         }
+
+        cursor.close();
     }
 
     public List<ShopItem> getCartItems(){
@@ -173,6 +191,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 shopItems.add(shopItem);
             }
         }
+
+        res.close();
 
         return shopItems;
     }

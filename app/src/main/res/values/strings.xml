@@ -16,5 +16,5 @@
     <string name="action_create_student">Create student</string>
     <string name="action_cancel_create">Cancel</string>
     <string name="prompt_student_name">Student Name</string>
-    <string name="title_activity_register_card">RegisterCardActivity</string>
+    <string name="title_activity_balance">Check Balance</string>
 </resources>

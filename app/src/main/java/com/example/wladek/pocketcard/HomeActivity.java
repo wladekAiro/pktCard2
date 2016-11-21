@@ -1,14 +1,10 @@
 package com.example.wladek.pocketcard;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.net.ItemsRequest;
+import com.example.wladek.pocketcard.nfc.ForegroundDispatch;
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 import com.example.wladek.pocketcard.util.ConnectivityReceiver;
@@ -56,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     List<ShopItem> shopItems = new ArrayList<>();
 
     ConnectivityReceiver receiver;
+    ForegroundDispatch foregroundDispatch;
 
     Button btnCheckBalance;
     Button btnBuyItem;
@@ -65,11 +63,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         myDb = new DatabaseHelper(this);
         setContentView(R.layout.activity_home);
+
         updateItems();
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         receiver = new ConnectivityReceiver(getApplicationContext(), HomeActivity.this);
+        foregroundDispatch = new ForegroundDispatch(nfcAdapter , HomeActivity.this ,
+                HomeActivity.class , HomeActivity.this);
 
         checkIfEnabled();
 
@@ -144,16 +145,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void checkBalance() {
-
+        Intent intent = new Intent(HomeActivity.this , BalanceActivity.class);
+        startActivity(intent);
     }
 
     private void buyItems() {
-        if (receiver.hasNetworkConnection()) {
+//        if (receiver.hasNetworkConnection()) {
             checkNfc(nfcAdapter, HomeActivity.this);
-        } else {
-            Snackbar.make(navigationView, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
+//        } else {
+//            Snackbar.make(navigationView, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show();
+//        }
     }
 
     private void checkIfEnabled() {
@@ -328,22 +330,22 @@ public class HomeActivity extends AppCompatActivity {
 
     public ArrayList<ShopItem> getShopItems() {
         ArrayList<ShopItem> shopItems = new ArrayList<ShopItem>();
+//
+//        Cursor res = myDb.getAllShopItems();
+//
+//        if (res.getCount() > 0) {
+//            while (res.moveToNext()) {
+//
+//                ShopItem shopItem = new ShopItem();
+//                shopItem.setName(res.getString(1));
+//                shopItem.setCode(res.getString(2));
+//                shopItem.setUnitPrice(res.getDouble(3));
+//
+//                shopItems.add(shopItem);
+//            }
+//        }
 
-        Cursor res = myDb.getAllShopItems();
-
-        if (res.getCount() > 0) {
-            while (res.moveToNext()) {
-
-                ShopItem shopItem = new ShopItem();
-                shopItem.setName(res.getString(1));
-                shopItem.setCode(res.getString(2));
-                shopItem.setUnitPrice(res.getDouble(3));
-
-                shopItems.add(shopItem);
-            }
-        }
-
-        return shopItems;
+        return myDb.getAllShopItems();
     }
 
     @Override
@@ -369,14 +371,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        enableForegroundDispatchSystem();
+        foregroundDispatch.enable();
         hideViews();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        disableForegroundDispatchSystem();
+        foregroundDispatch.disable();
     }
 
  /*   @Override
@@ -386,25 +388,25 @@ public class HomeActivity extends AppCompatActivity {
         ACRA.init(getApplication());
     }*/
 
-    public void enableForegroundDispatchSystem() {
-
-        if (nfcAdapter != null) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-            IntentFilter[] intentFilter = new IntentFilter[]{};
-
-            nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
-        }
-    }
-
-    public void disableForegroundDispatchSystem() {
-        if (nfcAdapter != null) {
-            nfcAdapter.disableForegroundDispatch(this);
-        }
-    }
+//    public void enableForegroundDispatchSystem() {
+//
+//        if (nfcAdapter != null) {
+//            Intent intent = new Intent(this, HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+//
+//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//            IntentFilter[] intentFilter = new IntentFilter[]{};
+//
+//            nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+//        }
+//    }
+//
+//    public void disableForegroundDispatchSystem() {
+//        if (nfcAdapter != null) {
+//            nfcAdapter.disableForegroundDispatch(this);
+//        }
+//    }
 
     public void updateItems() {
 

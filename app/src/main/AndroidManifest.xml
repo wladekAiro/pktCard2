@@ -40,12 +40,18 @@
         <activity
             android:name=".HomeActivity"
             android:label="PockeCard"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BuyScreenActivity"
-            android:label="Buy Items"/>
-        <activity android:name=".ViewItemsActivity"
-            android:parentActivityName=".HomeActivity"
-            android:label="Available Items"></activity>
+            android:label="Buy Items" />
+        <activity
+            android:name=".ViewItemsActivity"
+            android:label="Available Items"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".BalanceActivity"
+            android:label="@string/title_activity_balance"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
+
 </manifest>
