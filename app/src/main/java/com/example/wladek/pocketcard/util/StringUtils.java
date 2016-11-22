@@ -5,7 +5,7 @@ package com.example.wladek.pocketcard.util;
  */
 public abstract class StringUtils {
     //Producrion
-//    public static final String SERVER_URL = "http://pockecard.cloudapp.net/api";
+    public static final String SERVER_URL = "http://pockecard.cloudapp.net/api";
     //Test
-    public static final String SERVER_URL = "http://192.168.43.44:8080/api";
+//    public static final String SERVER_URL = "http://192.168.43.44:8080/api";
 }

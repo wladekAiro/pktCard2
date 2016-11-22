@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -274,10 +273,10 @@ public class CartFragment extends Fragment {
                 final LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View view = inflater.inflate(R.layout.student_pin_layout, null);
 
-                if (!receiver.hasNetworkConnection()){
-                    Snackbar.make(view, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }else {
+//                if (!receiver.hasNetworkConnection()){
+//                    Snackbar.make(view, "Connect to internet and try again.", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
+//                }else {
 
                     final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
 
@@ -303,7 +302,7 @@ public class CartFragment extends Fragment {
 
                     dialog = builder.create();
                     dialog.show();
-                }
+//                }
             }
         }
     }
@@ -441,6 +440,8 @@ public class CartFragment extends Fragment {
                         sweetAlertDialog.setConfirmText("Exit");
                         sweetAlertDialog.setCancelable(true);
                         sweetAlertDialog.show();
+
+                        clearCart();
 
                     } else {
                         sweetAlertDialog.dismiss();
@@ -612,6 +613,6 @@ public class CartFragment extends Fragment {
     }
 
     private void clearCart(){
-
+        databaseHelper.clearCart();
     }
 }

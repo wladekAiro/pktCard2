@@ -64,10 +64,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Long result =  db.insert(TABLE_ITEMS, null, contentValues);
 
             if(result == -1){
+                cursor.close();
+                db.close();
                 return false;
             }else {
+                cursor.close();
+                db.close();
                 return  true;
             }
+
         }else {
             contentValues = new ContentValues();
             contentValues.put("ITEM_NAME", itemName);
@@ -76,8 +81,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int result = db.update(TABLE_CART, contentValues, "ITEM_CORD='" + itemCord + "'", null);
 
             if (result >= 1){
+                cursor.close();
+                db.close();
                 return  true;
             }else {
+                cursor.close();
+                db.close();
                 return false;
             }
         }
@@ -103,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         res.close();
+        db.close();
 
         return shopItems;
     }
@@ -169,6 +179,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        db.close();
     }
 
     public List<ShopItem> getCartItems(){
@@ -193,6 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         res.close();
+        db.close();
 
         return shopItems;
     }
@@ -203,10 +215,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("ITEM_QTY", quantity);
-        contentValues.put("TOTAL_VALUE" , (shopItem.getUnitPrice() * quantity));
+        contentValues.put("TOTAL_VALUE", (shopItem.getUnitPrice() * quantity));
 
         int result = db.update(TABLE_CART, contentValues, "ITEM_CORD='" + shopItem.getCode() + "'" +
                 " AND ITEM_NAME='" + shopItem.getName() + "'", null);
+
+        db.close();
 
         return result;
     }
@@ -214,6 +228,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void removeFromCart(ShopItem shopItem){
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete(TABLE_CART , "ITEM_CORD =?", new String[]{shopItem.getCode()} );
+        db.close();
     }
 
     public boolean insertSchoolDetails(SchoolDetails schoolDetails , int loggedIn){
@@ -270,6 +285,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
+        res.close();
         db.close();
 
         return schoolDetails;
@@ -299,8 +315,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return studentData;
         }
 
+        res.close();
         db.close();
 
         return null;
+    }
+
+    public void clearCart(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_CART , null , null );
+        db.close();
     }
 }

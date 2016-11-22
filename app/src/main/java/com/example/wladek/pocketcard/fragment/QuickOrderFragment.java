@@ -1,7 +1,6 @@
 package com.example.wladek.pocketcard.fragment;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,18 +43,18 @@ public class QuickOrderFragment extends Fragment {
 
     private void loadItems() {
         items.clear();
-
-        Cursor res = databaseHelper.getAllShopItems();
-
-        if (res.getCount() > 0) {
-            while (res.moveToNext()) {
-                ShopItem shopItem = new ShopItem();
-                shopItem.setName(res.getString(1));
-                shopItem.setCode(res.getString(2));
-                shopItem.setUnitPrice(res.getDouble(3));
-                items.add(shopItem);
-            }
-        }
+        items.addAll(databaseHelper.getAllShopItems());
+//        Cursor res = databaseHelper.getAllShopItems();
+//
+//        if (res.getCount() > 0) {
+//            while (res.moveToNext()) {
+//                ShopItem shopItem = new ShopItem();
+//                shopItem.setName(res.getString(1));
+//                shopItem.setCode(res.getString(2));
+//                shopItem.setUnitPrice(res.getDouble(3));
+//                items.add(shopItem);
+//            }
+//        }
     }
 
     @Nullable
