@@ -11,7 +11,7 @@ import retrofit2.http.POST;
  * Created by wladek on 10/23/16.
  */
 public interface ApiInterface {
-    @POST("/student_checkout")
+    @POST("student_checkout")
     Call<CheckOutResponse> checkOutStudent(@Body CheckOutData checkOut);
 
 //    @GET("movie/top_rated")

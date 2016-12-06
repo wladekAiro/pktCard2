@@ -23,26 +23,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.BuyScreenActivity;
 import com.example.wladek.pocketcard.R;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
-import com.example.wladek.pocketcard.net.retrofit.ApiClient;
-import com.example.wladek.pocketcard.net.retrofit.ApiInterface;
-import com.example.wladek.pocketcard.pojo.CheckOutData;
-import com.example.wladek.pocketcard.pojo.CheckOutResponse;
+import com.example.wladek.pocketcard.net.CheckoutRequest;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 import com.example.wladek.pocketcard.pojo.StudentData;
 import com.example.wladek.pocketcard.util.ConnectivityReceiver;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by wladek on 7/13/16.
@@ -307,93 +310,9 @@ public class CartFragment extends Fragment {
         }
     }
 
-//    private void checkout(String pin) {
-//
-//        Map<String, Object> checkoutItems = new HashMap<String, Object>();
-//
-//        try{
-//
-//            getCartData();
-//
-//            StudentData studentData = getStudentData();
-//
-//            Gson gson = new GsonBuilder().create();
-//            JsonArray jsonArray = gson.toJsonTree(cartList).getAsJsonArray();
-//
-////            ShopItem[] itemArray = new ShopItem[cartList.size()];
-////            checkoutItems.put("cartItems", cartList.toArray(itemArray));
-//
-//            JSONObject data =  new JSONObject();
-//            data.put("pin", pin);
-//            data.put("cardNumber", studentData == null ? "test" : studentData.getCardNumber());
-//            data.put("cartItems" , jsonArray);
-//
-//            Log.e(" ++ DATA ++ ", data.toString());
-//
-//            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
-//            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//            sweetAlertDialog.setTitleText("Please wait ...");
-//            sweetAlertDialog.setCancelable(false);
-//            sweetAlertDialog.show();
-//
-//            Response.Listener<JSONArray> checkoutResponseListener = new Response.Listener<JSONArray>() {
-//                @Override
-//                public void onResponse(JSONArray response) {
-//                    JSONObject jsonObject = null;
-//
-//
-//                    try {
-//                        jsonObject = response.getJSONObject(0);
-//
-//                        checkedOut = jsonObject.getBoolean("checkedOut");
-//                        String serverResp = jsonObject.getString("message");
-//
-//                        if (checkedOut){
-//
-//                            sweetAlertDialog.dismiss();
-//
-//                            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.SUCCESS_TYPE);
-//                            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//                            sweetAlertDialog.setTitleText("RESPONSE");
-//                            sweetAlertDialog.setContentText(serverResp);
-//                            sweetAlertDialog.setConfirmText("Exit");
-//                            sweetAlertDialog.setCancelable(true);
-//                            sweetAlertDialog.show();
-//
-//                        }else {
-//                            sweetAlertDialog.dismiss();
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//
-//                }
-//            };
-//
-//            Map<String, Object> itms = new HashMap<String, Object>();
-//            itms.put("cartItems" , jsonArray);
-//
-//            JSONArray ja = new JSONArray();
-//            ja.put(data);
-//
-//            Log.e(" ++ JSON ARRAY ++ " , ja+"");
-//
-//            CheckoutRequest checkoutRequest = new CheckoutRequest(ja , checkoutResponseListener);
-//            RequestQueue queue = Volley.newRequestQueue(getActivity());
-//            queue.add(checkoutRequest);
-//
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
-
-
-    //Retrofit
     private void checkout(String pin) {
 
-        Map<String, ShopItem[]> checkoutItems = new HashMap<String, ShopItem[]>();
+        Map<String, Object> checkoutItems = new HashMap<String, Object>();
 
         try{
 
@@ -401,13 +320,17 @@ public class CartFragment extends Fragment {
 
             StudentData studentData = getStudentData();
 
-            CheckOutData data = new CheckOutData();
-            data.setCardNumber(studentData == null ? "Test" : studentData.getCardNumber());
-            data.setStudentPin(pin);
-            data.setShopItems(cartList);
+            Gson gson = new GsonBuilder().create();
+            JsonArray jsonArray = gson.toJsonTree(cartList).getAsJsonArray();
 
-            ApiInterface apiService =
-                    ApiClient.getClient().create(ApiInterface.class);
+//            ShopItem[] itemArray = new ShopItem[cartList.size()];
+//            checkoutItems.put("cartItems", cartList.toArray(itemArray));
+
+            checkoutItems.put("pin", pin);
+            checkoutItems.put("cardNumber", studentData == null ? "test" : studentData.getCardNumber());
+            checkoutItems.put("cartItems" , jsonArray.toString());
+
+            Log.e(" ++ DATA ++ ", checkoutItems+"");
 
             sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
             sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -415,61 +338,139 @@ public class CartFragment extends Fragment {
             sweetAlertDialog.setCancelable(false);
             sweetAlertDialog.show();
 
-
-            Gson gson = new Gson();
-
-            gson.toJson(data);
-
-            Log.e(" == PASSED DATA == ", gson.toString());
-
-
-            Call<CheckOutResponse> call = apiService.checkOutStudent(data);
-            call.enqueue(new Callback<CheckOutResponse>() {
+            Response.Listener<JSONObject> checkoutResponseListener = new Response.Listener<JSONObject>() {
                 @Override
-                public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
-                    CheckOutResponse checkOutResponse = response.body();
+                public void onResponse(JSONObject jsonObject) {
 
-                    if (checkOutResponse.isCheckedOut()) {
 
-                        sweetAlertDialog.dismiss();
+                    try {
+                        checkedOut = jsonObject.getBoolean("checkedOut");
+                        String serverResp = jsonObject.getString("message");
 
-                        sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
-                        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        sweetAlertDialog.setTitleText("RESPONSE");
-                        sweetAlertDialog.setContentText(checkOutResponse.getMessage());
-                        sweetAlertDialog.setConfirmText("Exit");
-                        sweetAlertDialog.setCancelable(true);
-                        sweetAlertDialog.show();
+                        if (checkedOut){
 
-                        clearCart();
+                            sweetAlertDialog.dismiss();
 
-                    } else {
-                        sweetAlertDialog.dismiss();
+                            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.SUCCESS_TYPE);
+                            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sweetAlertDialog.setTitleText("RESPONSE");
+                            sweetAlertDialog.setContentText(serverResp);
+                            sweetAlertDialog.setConfirmText("Exit");
+                            sweetAlertDialog.setCancelable(true);
+                            sweetAlertDialog.show();
+
+                        }else {
+                            sweetAlertDialog.dismiss();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
+
                 }
+            };
 
-                @Override
-                public void onFailure(Call<CheckOutResponse> call, Throwable t) {
-                    sweetAlertDialog.dismiss();
+//            Map<String, Object> itms = new HashMap<String, Object>();
+//            itms.put("cartItems" , jsonArray);
+//
+            JSONArray ja = new JSONArray();
+            ja.put(checkoutItems);
 
-                    sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
-                    sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    sweetAlertDialog.setTitleText("ERROR");
-                    sweetAlertDialog.setContentText("Opps... Something went wrong. Try again later");
-                    sweetAlertDialog.setCancelText("Exit");
-                    sweetAlertDialog.setCancelable(true);
-                    sweetAlertDialog.show();
+            Log.e(" ++ JSON ARRAY ++ " , ja+"");
 
-                    Log.e(TAG + " ++++ ", t.toString());
-                }
-            });
-
-            call.execute();
+            CheckoutRequest checkoutRequest = new CheckoutRequest(new JSONObject(checkoutItems) , checkoutResponseListener);
+            RequestQueue queue = Volley.newRequestQueue(getActivity());
+            queue.add(checkoutRequest);
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
+
+
+    //Retrofit
+//    private void checkout(String pin) {
+//
+//        Map<String, ShopItem[]> checkoutItems = new HashMap<String, ShopItem[]>();
+//
+//        try{
+//
+//            getCartData();
+//
+//            StudentData studentData = getStudentData();
+//
+//            CheckOutData data = new CheckOutData();
+//            data.setCardNumber(studentData == null ? "Test" : studentData.getCardNumber());
+//            data.setStudentPin(pin);
+//            data.setShopItems(cartList);
+//
+//            ApiInterface apiService =
+//                    ApiClient.getClient().create(ApiInterface.class);
+//
+//            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
+//            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//            sweetAlertDialog.setTitleText("Please wait ...");
+//            sweetAlertDialog.setCancelable(false);
+//            sweetAlertDialog.show();
+//
+//            Call<CheckOutResponse> call = apiService.checkOutStudent(data);
+//            call.enqueue(new Callback<CheckOutResponse>() {
+//                @Override
+//                public void onResponse(Call<CheckOutResponse> call, Response<CheckOutResponse> response) {
+//                    CheckOutResponse checkOutResponse = response.body();
+//
+//                    if (checkOutResponse != null) {
+//                        if (checkOutResponse.isCheckedOut()) {
+//                            sweetAlertDialog.dismiss();
+//
+//                            sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+//                            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//                            sweetAlertDialog.setTitleText("RESPONSE");
+//                            sweetAlertDialog.setContentText(checkOutResponse.getMessage());
+//                            sweetAlertDialog.setConfirmText("Exit");
+//                            sweetAlertDialog.setCancelable(true);
+//                            sweetAlertDialog.show();
+//
+//                            clearCart();
+//
+//                        } else {
+//                            sweetAlertDialog.dismiss();
+//                        }
+//                    }else {
+//                        sweetAlertDialog.dismiss();
+//
+//                        sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+//                        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//                        sweetAlertDialog.setTitleText("RESPONSE");
+//                        sweetAlertDialog.setContentText("Null Response");
+//                        sweetAlertDialog.setConfirmText("Exit");
+//                        sweetAlertDialog.setCancelable(true);
+//                        sweetAlertDialog.show();
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<CheckOutResponse> call, Throwable t) {
+//                    sweetAlertDialog.dismiss();
+//
+//                    sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE);
+//                    sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+//                    sweetAlertDialog.setTitleText("ERROR");
+//                    sweetAlertDialog.setContentText("Opps... Something went wrong. Try again later");
+//                    sweetAlertDialog.setCancelText("Exit");
+//                    sweetAlertDialog.setCancelable(true);
+//                    sweetAlertDialog.show();
+//
+//                    Log.e(TAG + " ++++ ", t.toString());
+//                }
+//            });
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
     public class MyPersonalClickListener implements View.OnClickListener{
         String buttonName;

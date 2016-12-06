@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.example.wladek.pocketcard.nfc.ForegroundDispatch;
+import com.example.wladek.pocketcard.nfc.NfcHandler;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -17,7 +17,7 @@ public class BalanceActivity extends AppCompatActivity {
 
     SweetAlertDialog sweetAlertDialog;
     NfcAdapter nfcAdapter;
-    ForegroundDispatch foregroundDispatch;
+    NfcHandler nfcHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class BalanceActivity extends AppCompatActivity {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        foregroundDispatch = new ForegroundDispatch(nfcAdapter , BalanceActivity.this ,
+        nfcHandler = new NfcHandler(nfcAdapter , BalanceActivity.this ,
                 BalanceActivity.class , BalanceActivity.this);
 
         showSweetAlert();
@@ -73,12 +73,12 @@ public class BalanceActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        foregroundDispatch.enable();
+        nfcHandler.enableForeGroundDispatch();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        foregroundDispatch.disable();
+        nfcHandler.disableForeGroundDispatch();
     }
 }

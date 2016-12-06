@@ -1,5 +1,7 @@
 package com.example.wladek.pocketcard.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,8 +9,11 @@ import java.util.ArrayList;
  * Created by wladek on 10/16/16.
  */
 public class CheckOutData implements Serializable{
+    @SerializedName("cardNumber")
     private String cardNumber;
+    @SerializedName("studentPin")
     private String studentPin;
+    @SerializedName("shopItems")
     private ArrayList<ShopItem> shopItems;
 
     public String getStudentPin() {

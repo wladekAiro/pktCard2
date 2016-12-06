@@ -25,7 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.net.ItemsRequest;
-import com.example.wladek.pocketcard.nfc.ForegroundDispatch;
+import com.example.wladek.pocketcard.nfc.NfcHandler;
 import com.example.wladek.pocketcard.pojo.SchoolDetails;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 import com.example.wladek.pocketcard.util.ConnectivityReceiver;
@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     List<ShopItem> shopItems = new ArrayList<>();
 
     ConnectivityReceiver receiver;
-    ForegroundDispatch foregroundDispatch;
+    NfcHandler nfcHandler;
 
     Button btnCheckBalance;
     Button btnBuyItem;
@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         receiver = new ConnectivityReceiver(getApplicationContext(), HomeActivity.this);
-        foregroundDispatch = new ForegroundDispatch(nfcAdapter , HomeActivity.this ,
+        nfcHandler = new NfcHandler(nfcAdapter , HomeActivity.this ,
                 HomeActivity.class , HomeActivity.this);
 
         checkIfEnabled();
@@ -218,7 +218,7 @@ public class HomeActivity extends AppCompatActivity {
             } else {
 
                 builder = new MaterialDialog.Builder(context);
-                builder.content("Please enable the nfc adaptor to proceed");
+                builder.content("Please enableForeGroundDispatch the nfc adaptor to proceed");
                 builder.positiveText("Ok");
                 builder.cancelable(false);
 
@@ -371,14 +371,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        foregroundDispatch.enable();
+        nfcHandler.enableForeGroundDispatch();
         hideViews();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        foregroundDispatch.disable();
+        nfcHandler.disableForeGroundDispatch();
     }
 
  /*   @Override
