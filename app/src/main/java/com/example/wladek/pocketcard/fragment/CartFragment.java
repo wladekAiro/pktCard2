@@ -2,6 +2,7 @@ package com.example.wladek.pocketcard.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,23 +28,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.wladek.pocketcard.BuyScreenActivity;
+import com.example.wladek.pocketcard.HomeActivity;
 import com.example.wladek.pocketcard.R;
 import com.example.wladek.pocketcard.helper.DatabaseHelper;
 import com.example.wladek.pocketcard.net.CheckoutRequest;
+import com.example.wladek.pocketcard.pojo.CheckOutData;
 import com.example.wladek.pocketcard.pojo.ShopItem;
 import com.example.wladek.pocketcard.pojo.StudentData;
 import com.example.wladek.pocketcard.util.ConnectivityReceiver;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -56,7 +55,7 @@ public class CartFragment extends Fragment {
     int totalCartItemCount = 0;
     Double totalCartValue = new Double(0);
     ListView lvl;
-    final String[] qtyValues = {"1", "2", "3" ,"4", "5", "6", "7", "8", "9", "10"};
+    final String[] qtyValues = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     TextView txtItemText;
     TextView txtItemCount;
     TextView txtTotalAmount;
@@ -81,7 +80,7 @@ public class CartFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHelper = new DatabaseHelper(getActivity());
-        receiver = new ConnectivityReceiver(getContext() , getActivity());
+        receiver = new ConnectivityReceiver(getContext(), getActivity());
         getCartData();
     }
 
@@ -110,7 +109,7 @@ public class CartFragment extends Fragment {
         txtCartEmpty = (TextView) myView.findViewById(R.id.txtCartEmpty);
 
 
-        if (totalCartItemCount == 0){
+        if (totalCartItemCount == 0) {
             txtItemText.setVisibility(myView.INVISIBLE);
             txtTotalAmount.setVisibility(myView.INVISIBLE);
             btnCheckOut.setVisibility(myView.INVISIBLE);
@@ -118,7 +117,7 @@ public class CartFragment extends Fragment {
             txtItemCount.setVisibility(myView.INVISIBLE);
             btnRefreshCart.setVisibility(myView.VISIBLE);
             txtCartEmpty.setVisibility(myView.VISIBLE);
-        }else {
+        } else {
             txtItemText.setVisibility(myView.VISIBLE);
             txtTotalAmount.setVisibility(myView.VISIBLE);
             btnCheckOut.setVisibility(myView.VISIBLE);
@@ -128,8 +127,8 @@ public class CartFragment extends Fragment {
             txtCartEmpty.setVisibility(myView.INVISIBLE);
         }
 
-        txtItemCount.setText(""+totalCartItemCount);
-        txtTotalAmount.setText("Ksh."+totalCartValue);
+        txtItemCount.setText("" + totalCartItemCount);
+        txtTotalAmount.setText("Ksh." + totalCartValue);
 
         txtItemText.setTypeface(typeface);
         txtCartEmpty.setTypeface(typeface);
@@ -143,7 +142,7 @@ public class CartFragment extends Fragment {
         return myView;
     }
 
-    public class CustomListOne extends BaseAdapter{
+    public class CustomListOne extends BaseAdapter {
 
         private LayoutInflater layoutInflater;
         ViewHolder viewHolder;
@@ -181,8 +180,8 @@ public class CartFragment extends Fragment {
             final ShopItem tmpItem =
                     cartList.get(position);
 
-            if (convertView == null){
-                convertView = layoutInflater.inflate(R.layout.listone_custom , null);
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.listone_custom, null);
 
                 viewHolder = new ViewHolder();
 
@@ -192,7 +191,7 @@ public class CartFragment extends Fragment {
                 viewHolder.txtCartItemValue = (TextView) convertView.findViewById(R.id.txtCartItemValue);
 
                 convertView.setTag(viewHolder);
-            }else {
+            } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
@@ -202,7 +201,7 @@ public class CartFragment extends Fragment {
             viewHolder.txtCartItemName.setTypeface(type);
             viewHolder.txtCartItemValue.setTypeface(type);
 
-            ArrayAdapter<String> aa = new ArrayAdapter<String>(context , R.layout.spinner_item , qtyValues);
+            ArrayAdapter<String> aa = new ArrayAdapter<String>(context, R.layout.spinner_item, qtyValues);
             aa.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
             viewHolder.spnQty.setAdapter(aa);
@@ -237,7 +236,7 @@ public class CartFragment extends Fragment {
                             totalCartValue = (totalCartValue + cartList.get(i).getTotalCartValue());
                         }
 
-                        txtItemCount.setText(""+totalCartItemCount);
+                        txtItemCount.setText("" + totalCartItemCount);
                         txtTotalAmount.setText("Ksh." + totalCartValue);
 
                     }
@@ -253,14 +252,14 @@ public class CartFragment extends Fragment {
         }
     }
 
-    static class ViewHolder{
+    static class ViewHolder {
         Button btnRmFromCart;
         Spinner spnQty;
         TextView txtCartItemName;
         TextView txtCartItemValue;
     }
 
-    public class MyCheckOutClickListener implements View.OnClickListener{
+    public class MyCheckOutClickListener implements View.OnClickListener {
 
         String buttonName;
 
@@ -271,7 +270,7 @@ public class CartFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if(buttonName.equals("btnCheckOut")){
+            if (buttonName.equals("btnCheckOut")) {
 
                 final LayoutInflater inflater = getActivity().getLayoutInflater();
                 final View view = inflater.inflate(R.layout.student_pin_layout, null);
@@ -281,30 +280,30 @@ public class CartFragment extends Fragment {
 //                            .setAction("Action", null).show();
 //                }else {
 
-                    final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
+                final EditText pinText = (EditText) view.findViewById(R.id.inputPin);
 
-                    builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("ENTER PIN");
-                    builder.setView(view);
-                    builder.setCancelable(false);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("ENTER PIN");
+                builder.setView(view);
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                            String pin = pinText.getText().toString();
+                        String pin = pinText.getText().toString();
 
-                            if (pin.length() == 4) {
-                                checkout(pin);
-                            } else {
-                                Toast.makeText(getContext(), "Pin too short, please try again.", Toast.LENGTH_SHORT).show();
-                            }
+                        if (pin.length() == 4) {
+                            checkout(pin);
+                        } else {
+                            Toast.makeText(getContext(), "Pin too short, please try again.", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                });
 
-                    builder.setNegativeButton("CANCEL", null);
+                builder.setNegativeButton("CANCEL", null);
 
-                    dialog = builder.create();
-                    dialog.show();
+                dialog = builder.create();
+                dialog.show();
 //                }
             }
         }
@@ -312,55 +311,89 @@ public class CartFragment extends Fragment {
 
     private void checkout(String pin) {
 
-        Map<String, Object> checkoutItems = new HashMap<String, Object>();
-
-        try{
+        try {
 
             getCartData();
 
             StudentData studentData = getStudentData();
 
-            Gson gson = new GsonBuilder().create();
-            JsonArray jsonArray = gson.toJsonTree(cartList).getAsJsonArray();
+            CheckOutData checkOutData = new CheckOutData();
+            checkOutData.setStudentPin(pin);
+            checkOutData.setCardNumber("1234");
+            checkOutData.setShopItems(cartList);
+
+            Gson gson = new Gson();
+            String json = "[" + gson.toJson(checkOutData) + "]";
 
 //            ShopItem[] itemArray = new ShopItem[cartList.size()];
 //            checkoutItems.put("cartItems", cartList.toArray(itemArray));
 
-            checkoutItems.put("pin", pin);
-            checkoutItems.put("cardNumber", studentData == null ? "test" : studentData.getCardNumber());
-            checkoutItems.put("cartItems" , jsonArray.toString());
+//            checkoutItems.put("pin", pin);
+//            checkoutItems.put("cardNumber", studentData == null ? "test" : studentData.getCardNumber());
+//            checkoutItems.put("cartItems" , jsonArray.toString());
 
-            Log.e(" ++ DATA ++ ", checkoutItems+"");
+            Log.e(" ++ DATA ++ ", json + "");
 
-            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.PROGRESS_TYPE);
+            sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
             sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             sweetAlertDialog.setTitleText("Please wait ...");
             sweetAlertDialog.setCancelable(false);
             sweetAlertDialog.show();
 
-            Response.Listener<JSONObject> checkoutResponseListener = new Response.Listener<JSONObject>() {
+            Response.Listener<JSONArray> checkoutResponseListener = new Response.Listener<JSONArray>() {
                 @Override
-                public void onResponse(JSONObject jsonObject) {
+                public void onResponse(JSONArray array) {
 
-
+                    JSONObject jsonObject = null;
                     try {
+                        jsonObject = (JSONObject) array.get(0);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+
                         checkedOut = jsonObject.getBoolean("checkedOut");
                         String serverResp = jsonObject.getString("message");
 
-                        if (checkedOut){
+                        if (checkedOut) {
 
                             sweetAlertDialog.dismiss();
 
-                            sweetAlertDialog = new SweetAlertDialog(getActivity() , SweetAlertDialog.SUCCESS_TYPE);
+                            sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE);
+                            sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            sweetAlertDialog.setTitleText("SUCCESS");
+                            sweetAlertDialog.setContentText(serverResp);
+                            sweetAlertDialog.setConfirmText("Ok");
+                            sweetAlertDialog.setCancelable(false);
+                            sweetAlertDialog.show();
+
+                            sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    clearCart();
+                                }
+                            });
+
+                        } else {
+                            sweetAlertDialog.dismiss();
+
+                            sweetAlertDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
                             sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                             sweetAlertDialog.setTitleText("RESPONSE");
                             sweetAlertDialog.setContentText(serverResp);
                             sweetAlertDialog.setConfirmText("Exit");
-                            sweetAlertDialog.setCancelable(true);
+                            sweetAlertDialog.setCancelText("Retry");
+                            sweetAlertDialog.setCancelable(false);
                             sweetAlertDialog.show();
 
-                        }else {
-                            sweetAlertDialog.dismiss();
+                            sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    clearCart();
+                                }
+                            });
                         }
 
                     } catch (JSONException e) {
@@ -371,19 +404,13 @@ public class CartFragment extends Fragment {
                 }
             };
 
-//            Map<String, Object> itms = new HashMap<String, Object>();
-//            itms.put("cartItems" , jsonArray);
-//
-            JSONArray ja = new JSONArray();
-            ja.put(checkoutItems);
+            JSONArray finalJa = new JSONArray(json);
 
-            Log.e(" ++ JSON ARRAY ++ " , ja+"");
-
-            CheckoutRequest checkoutRequest = new CheckoutRequest(new JSONObject(checkoutItems) , checkoutResponseListener);
+            CheckoutRequest checkoutRequest = new CheckoutRequest(finalJa, checkoutResponseListener);
             RequestQueue queue = Volley.newRequestQueue(getActivity());
             queue.add(checkoutRequest);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -472,7 +499,7 @@ public class CartFragment extends Fragment {
 //        }
 //    }
 
-    public class MyPersonalClickListener implements View.OnClickListener{
+    public class MyPersonalClickListener implements View.OnClickListener {
         String buttonName;
         ShopItem shopItem;
         int tmpQty;
@@ -490,11 +517,11 @@ public class CartFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            if (buttonName.equals("button_delete")){
+            if (buttonName.equals("button_delete")) {
 
                 removeFromCart(shopItem);
 
-                Toast.makeText(getActivity() , "REMOVED" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "REMOVED", Toast.LENGTH_SHORT).show();
 
                 getCartData();
 
@@ -517,10 +544,10 @@ public class CartFragment extends Fragment {
                     totalCartValue = (totalCartValue + cartList.get(i).getTotalCartValue());
                 }
 
-                txtItemCount.setText(""+totalCartItemCount);
-                txtTotalAmount.setText("Ksh."+totalCartValue);
+                txtItemCount.setText("" + totalCartItemCount);
+                txtTotalAmount.setText("Ksh." + totalCartValue);
 
-                if (totalCartItemCount == 0){
+                if (totalCartItemCount == 0) {
                     txtItemText.setVisibility(myView.INVISIBLE);
                     txtTotalAmount.setVisibility(myView.INVISIBLE);
                     btnCheckOut.setVisibility(myView.INVISIBLE);
@@ -528,7 +555,7 @@ public class CartFragment extends Fragment {
                     lvl.setVisibility(myView.INVISIBLE);
                     txtItemCount.setVisibility(myView.INVISIBLE);
                     txtCartEmpty.setVisibility(myView.VISIBLE);
-                }else {
+                } else {
                     txtItemText.setVisibility(myView.VISIBLE);
                     txtTotalAmount.setVisibility(myView.VISIBLE);
                     btnCheckOut.setVisibility(myView.VISIBLE);
@@ -540,11 +567,11 @@ public class CartFragment extends Fragment {
 
                 lvl.setAdapter(new CustomListOne(getActivity(), cartList));
 
-            }else if (buttonName.equals("btnRefreshCart")){
+            } else if (buttonName.equals("btnRefreshCart")) {
 
                 getCartData();
 
-                Toast.makeText(getActivity() , " Refreshing .... " , Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), " Refreshing .... ", Toast.LENGTH_LONG).show();
 
                 TextView txtItemText = (TextView) myView.findViewById(R.id.txtItemText);
                 TextView txtItemCount = (TextView) myView.findViewById(R.id.txtItemCount);
@@ -561,10 +588,10 @@ public class CartFragment extends Fragment {
                     totalCartValue = (totalCartValue + cartList.get(i).getTotalCartValue());
                 }
 
-                txtItemCount.setText(""+totalCartItemCount);
-                txtTotalAmount.setText("Ksh."+totalCartValue);
+                txtItemCount.setText("" + totalCartItemCount);
+                txtTotalAmount.setText("Ksh." + totalCartValue);
 
-                if (totalCartItemCount == 0){
+                if (totalCartItemCount == 0) {
                     txtItemText.setVisibility(myView.INVISIBLE);
                     txtTotalAmount.setVisibility(myView.INVISIBLE);
                     btnCheckOut.setVisibility(myView.INVISIBLE);
@@ -572,7 +599,7 @@ public class CartFragment extends Fragment {
                     lvl.setVisibility(myView.INVISIBLE);
                     txtItemCount.setVisibility(myView.INVISIBLE);
                     txtCartEmpty.setVisibility(myView.VISIBLE);
-                }else {
+                } else {
                     txtItemText.setVisibility(myView.VISIBLE);
                     txtTotalAmount.setVisibility(myView.VISIBLE);
                     btnCheckOut.setVisibility(myView.VISIBLE);
@@ -597,23 +624,25 @@ public class CartFragment extends Fragment {
         return databaseHelper.getStudentData();
     }
 
-    private void updateCart(int quantity , ShopItem item){
+    private void updateCart(int quantity, ShopItem item) {
         Log.e("CART UPDATE", "+++ UPDATING CART DATA +++");
 
-        int result = databaseHelper.updateCart(quantity , item);
+        int result = databaseHelper.updateCart(quantity, item);
 
-        Log.e("CART UPDATE" , "+++ RESULT ==== "+result);
+        Log.e("CART UPDATE", "+++ RESULT ==== " + result);
     }
 
-    public void removeFromCart(ShopItem shopItem){
+    public void removeFromCart(ShopItem shopItem) {
         Log.e("CART REMOVE", "+++ REMOVING +++");
 
         databaseHelper.removeFromCart(shopItem);
 
-        Log.e("CART REMOVE" , "+++ RESULT ==== ");
+        Log.e("CART REMOVE", "+++ RESULT ==== ");
     }
 
-    private void clearCart(){
+    private void clearCart() {
         databaseHelper.clearCart();
+        Intent intent = new Intent(getContext() , HomeActivity.class);
+        startActivity(intent);
     }
 }

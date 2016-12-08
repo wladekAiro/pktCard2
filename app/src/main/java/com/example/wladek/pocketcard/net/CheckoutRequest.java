@@ -1,20 +1,20 @@
 package com.example.wladek.pocketcard.net;
 
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.wladek.pocketcard.util.StringUtils;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 /**
  * Created by wladek on 9/2/16.
  */
-public class CheckoutRequest extends JsonObjectRequest {
+public class CheckoutRequest extends JsonArrayRequest {
 
     private static final String REGISTER_REQUEST_URL = StringUtils.SERVER_URL + "/student_checkout";
 
-    public CheckoutRequest(JSONObject jsonObject, Response.Listener<JSONObject> listener) {
-        super(Method.POST ,REGISTER_REQUEST_URL, jsonObject, listener, null);
+    public CheckoutRequest(JSONArray jsonArray, Response.Listener<JSONArray> listener) {
+        super(Method.POST ,REGISTER_REQUEST_URL, jsonArray, listener, null);
     }
 
 //    public CheckoutRequest(JSONObject jsonRequest, Response.Listener<JSONObject> listener) {

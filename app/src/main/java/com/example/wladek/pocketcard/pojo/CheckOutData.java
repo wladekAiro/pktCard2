@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class CheckOutData implements Serializable{
     @SerializedName("cardNumber")
     private String cardNumber;
-    @SerializedName("studentPin")
+    @SerializedName("pin")
     private String studentPin;
-    @SerializedName("shopItems")
+    @SerializedName("cartItems")
     private ArrayList<ShopItem> shopItems;
 
     public String getStudentPin() {
